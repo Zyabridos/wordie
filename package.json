@@ -1,0 +1,30 @@
+{
+  "name": "wordie",
+  "version": "1.0.0",
+  "description": "A game, where you win if you guess a randomly generated word",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx jest"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Zyabridos/wordie.git"
+  },
+  "author": "Nina Ziabrina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Zyabridos/wordie/issues"
+  },
+  "homepage": "https://github.com/Zyabridos/wordie#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.20.0",
+    "eslint": "^9.20.1",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-react": "^7.37.4",
+    "prettier": "^3.5.0",
+    "readline-sync": "^1.4.10",
+    "sinon": "^19.0.2"
+  }
+}
