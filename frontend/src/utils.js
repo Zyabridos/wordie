@@ -27,5 +27,3 @@ export const compareCommonLetters = (word1, word2) => {
 
   return result;
 };
-
-// console.log(compareCommonLetters('otter', 'water'))

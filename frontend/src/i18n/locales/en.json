@@ -7,5 +7,12 @@
       "wordInputLabel": "answer-input",
       "answerProgress": "Here is how you are doing: "
     }
+  },
+  "navbar": {
+    "title": "Wordie",
+    "contactUs": "Contact us",
+    "aboutUs": "About us",
+    "rules": "Rules",
+    "languageSwitcher": "Change language"
   }
 }

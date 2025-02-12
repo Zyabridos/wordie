@@ -7,9 +7,11 @@ import { getRandomWord, compareCommonLetters } from "../../utils.js";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup, Row, Col } from "react-bootstrap";
 
-const WordComponent = ({ word }) => {
-  return <div className="cell">{word}</div>;
-};
+// const WordComponent = ({ word }) => {
+//   // return <div className="cell">{word}</div>;
+//   const wordArray = word.split("");
+//   return <div className="cell">{wordArray.forEach((char) => {char})}</div>;
+// };
 
 const Temp = () => {
   const { t } = useTranslation();
@@ -93,9 +95,16 @@ const Temp = () => {
   return (
     <div id="game-container">
       <div className="grid">
-        {words.map((word, index) => (
+        {/* {words.map((word, index) => (
           <WordComponent key={index} word={word.body} />
-        ))}
+        ))} */}
+        {answers.map((word, index) =>
+          word.body[0].split("").map((char, charIndex) => (
+            <div className="cell" key={`${index}-${charIndex}`}>
+              {char}
+            </div>
+          )),
+        )}
       </div>
       <Form noValidate onSubmit={handleSubmit} className="p-3 border rounded">
         <Form.Group controlId="wordInput">
