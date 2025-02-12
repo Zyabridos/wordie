@@ -1,4 +1,4 @@
-name: My Tests Workflow
+name: Check instalation of dependencies
 
 on:
   push:
@@ -13,12 +13,5 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # клонирование репозитория
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
       - name: Install dependencies
         run: make install
-
-      - name: Run tests
-        run: make test

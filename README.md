@@ -1,10 +1,13 @@
 ### Description
+
 Wordie is a simple word-guessing game. The goal is to guess the correct five-letter word within five attempts.
 
 ### Minimum System Requirements
+
 - Node.js v20.17.0 or higher
 
 ## Setup
+
 To set up and start the game locally, run the following commands in your terminal:
 
 ```sh
@@ -12,7 +15,7 @@ $ git clone https://github.com/Zyabridos/wordie
 $ cd wordie
 $ make install
 $ make play
-``` 
+```
 
 ## How to play:
 

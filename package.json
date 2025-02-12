@@ -26,5 +26,13 @@
     "prettier": "^3.5.0",
     "readline-sync": "^1.4.10",
     "sinon": "^19.0.2"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.5.1",
+    "bootstrap": "^5.3.3",
+    "i18next": "^24.2.2",
+    "lodash": "^4.17.21",
+    "react-bootstrap": "^2.10.9",
+    "react-i18next": "^15.4.0"
   }
 }

@@ -1,0 +1,11 @@
+{
+  "forms": {
+    "main": {
+      "buttonAdd": "Add",
+      "buttonClear": "Clear",
+      "wordInputPlaceholder": "Type a word...",
+      "wordInputLabel": "answer-input",
+      "answerProgress": "Here is how you are doing: "
+    }
+  }
+}
