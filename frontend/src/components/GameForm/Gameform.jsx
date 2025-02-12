@@ -5,10 +5,21 @@ import "./Gameform.css";
 import WORDSLIST from "../../wordsList.js";
 import { getRandomWord, compareCommonLetters } from "../../utils.js";
 import { useTranslation } from "react-i18next";
-import { Form, Button, InputGroup, Row, Col } from "react-bootstrap";
+import { Form, Button, InputGroup } from "react-bootstrap";
 
-const WordComponent = ({ word }) => {
-  return <div className="cell">{word}</div>;
+const WordComponent = ({ word, letterClasses }) => {
+  return (
+    <div className="word-container">
+      {word.split("").map((char, index) => (
+        <div
+          key={index}
+          className={`letter-cell ${letterClasses[index] || ""}`}
+        >
+          {char}
+        </div>
+      ))}
+    </div>
+  );
 };
 
 const Temp = () => {
@@ -94,7 +105,11 @@ const Temp = () => {
     <div id="game-container">
       <div className="grid">
         {words.map((word, index) => (
-          <WordComponent key={index} word={word.body} />
+          <WordComponent
+            key={index}
+            word={word.body}
+            letterClasses={answers[index] || []}
+          />
         ))}
       </div>
       <Form noValidate onSubmit={handleSubmit} className="p-3 border rounded">
@@ -124,11 +139,6 @@ const Temp = () => {
           <Button type="button" variant="danger" onClick={clearRound}>
             {t("forms.main.buttonClear")}
           </Button>
-        </div>
-
-        <div className="answer-progress mt-3 p-2 border rounded bg-light">
-          {t("forms.main.answerProgress")}{" "}
-          {answers.length > 0 ? answers[answers.length - 1].join(" ") : ""}
         </div>
       </Form>
     </div>
