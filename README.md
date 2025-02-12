@@ -24,7 +24,7 @@ $ make play
 
 3. If the letter is correct and in the correct position, the letter will become green.
 4. If the letter is correct, but in the wrong position, the letter will become yellow.
-5. The yellow highlight will not show up if you have more of a letter than in the correct answer. 
+5. The yellow highlight will not show up if you have more of a letter than in the correct answer.
 
 ## Examples
 
@@ -44,4 +44,3 @@ $ make play
 
 - `T`, `E`, `R` → 🟩 (Correct letters in the correct positions)
 - The first `T` in `OTTER` will not be yellow because `WATER` contains only **one** `T`.
-
