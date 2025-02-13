@@ -1,32 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addWord, clearWords } from "../../store/slices/wordsSlice.js";
 import "./Gameform.css";
-import WORDSLIST from "../../wordsList.js";
-import {
-  getRandomWord,
-  compareCommonLetters,
-} from "../../utils.js";
+import { getRandomWord, compareCommonLetters } from "../../utils.js";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import GameOverModal from "../Modals/GameOverModal.jsx";
 import VictoryModal from "../Modals/VicrotyModal.jsx";
 import getInputError from "../../errorHandler.js";
-
-const WordComponent = ({ word, letterClasses }) => {
-  return (
-    <div className="word-container">
-      {word.split("").map((char, index) => (
-        <div
-          key={index}
-          className={`letter-cell ${letterClasses[index] || ""}`}
-        >
-          {char}
-        </div>
-      ))}
-    </div>
-  );
-};
+import WordComponent from "./WordComponent.jsx";
 
 const Gameform = ({ initialWord = null }) => {
   const { t } = useTranslation();
@@ -43,40 +25,53 @@ const Gameform = ({ initialWord = null }) => {
 
   const [validated, setValidated] = useState(false);
   const [inputError, setInputError] = useState("");
-
-  const [targetWord, setTargetWord] = useState(
-    initialWord || getRandomWord(WORDSLIST),
-  );
-  const [targetArray, setTargetArray] = useState(targetWord.split(""));
+  const [targetArray, setTargetArray] = useState([]);
   const [inputText, setInputText] = useState("");
   const [answers, setAnswers] = useState([]);
   const [roundsCount, setRoundsCount] = useState(1);
   const [commonLetters, setCommonLetters] = useState({});
+  const [targetWord, setTargetWord] = useState(
+    initialWord || getRandomWord(targetArray),
+  );
+
+  useEffect(() => {
+    fetch("/words.txt")
+      .then((response) => response.text())
+      .then((words) => words.split("\n"))
+      .then((words) => words.map(word => word.toLowerCase()))
+      .then((words) => words.filter(word => word.length === 5))
+      .then((words) => {
+        setTargetArray(words);
+        if (!initialWord) {
+          setTargetWord(getRandomWord(words));
+        }
+      });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     setValidated(true);
 
-    if(getInputError(inputText.trim())) {
+    if (getInputError(inputText.trim())) {
       setInputError(getInputError(inputText.trim()));
       return;
     }
 
     setInputError("");
 
-    dispatch(addWord({ body: inputText.trim() }));
+    dispatch(addWord({ body: inputText.trim().toLowerCase() }));
 
-    const wordArray = inputText.split("");
+    const wordArray = inputText.toLowerCase().split("");
     const answer = Array(5).fill("wrong");
 
     const letterCount = {};
-    targetArray.forEach((char) => {
+    targetWord.split("").forEach((char) => {
       letterCount[char] = (letterCount[char] || 0) + 1;
     });
 
     wordArray.forEach((char, index) => {
-      if (char === targetArray[index]) {
+      if (char === targetWord[index]) {
         answer[index] = "correct";
         letterCount[char]--;
       }
@@ -90,7 +85,7 @@ const Gameform = ({ initialWord = null }) => {
     });
 
     setAnswers([...answers, answer]);
-    setCommonLetters(compareCommonLetters(inputText.trim(), targetWord));
+    setCommonLetters(compareCommonLetters(inputText.trim().toLowerCase(), targetWord));
 
     console.log("targetWord: ", targetWord);
 
@@ -105,12 +100,12 @@ const Gameform = ({ initialWord = null }) => {
 
   const clearRound = () => {
     dispatch(clearWords());
-    const newWord = initialWord || getRandomWord(WORDSLIST);
+    const newWord = initialWord || getRandomWord(targetArray);
     setTargetWord(newWord);
-    setTargetArray(newWord.split(""));
     setAnswers([]);
     setRoundsCount(1);
     setCommonLetters({});
+    setInputError("");
   };
 
   return (
