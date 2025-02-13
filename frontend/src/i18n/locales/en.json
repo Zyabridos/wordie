@@ -3,9 +3,7 @@
     "main": {
       "buttonAdd": "Add",
       "buttonClear": "Clear",
-      "wordInputPlaceholder": "Type a word...",
-      "wordInputLabel": "answer-input",
-      "answerProgress": "Here is how you are doing: "
+      "wordInputPlaceholder": "Type a word..."
     }
   },
   "navbar": {
@@ -14,5 +12,22 @@
     "aboutUs": "About us",
     "rules": "Rules",
     "languageSwitcher": "Change language"
+  },
+  "modals": {
+    "gameOver": {
+      "title": "Game over",
+      "message": "Sorry, you lost! The corrrect word was: ",
+      "buttonYes": "Try again",
+      "buttonNo": "Close"
+    },
+    "rules": {
+      "title": "How to play",
+      "buttonClose": "Close",
+      "rule1": "You have 5 guesses",
+      "rule2": "All words consist of exactly 5 letters",
+      "rule3": "If the letter is correct and in the correct position, the letter will become green",
+      "rule4": "If the letter is correct, but in the wrong position, the letter will become yellow",
+      "rule5": "The yellow highlight will not show up if you have more of a letter than in the correct answer"
+    }
   }
 }

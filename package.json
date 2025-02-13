@@ -1,5 +1,5 @@
 {
-  "name": "wordie",
+  "name": "wordle",
   "version": "1.0.0",
   "description": "A game, where you win if you guess a randomly generated word",
   "main": "index.js",
@@ -9,14 +9,14 @@
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Zyabridos/wordie.git"
+    "url": "git+https://github.com/Zyabridos/wordle.git"
   },
   "author": "Nina Ziabrina",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Zyabridos/wordie/issues"
+    "url": "https://github.com/Zyabridos/wordle/issues"
   },
-  "homepage": "https://github.com/Zyabridos/wordie#readme",
+  "homepage": "https://github.com/Zyabridos/wordle#readme",
   "devDependencies": {
     "@eslint/js": "^9.20.0",
     "@playwright/test": "^1.50.1",

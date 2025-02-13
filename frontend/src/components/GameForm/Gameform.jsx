@@ -6,6 +6,7 @@ import WORDSLIST from "../../wordsList.js";
 import { getRandomWord, compareCommonLetters } from "../../utils.js";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
+import GameOverModal from "../Modals/GameOverModal.jsx";
 
 const WordComponent = ({ word, letterClasses }) => {
   return (
@@ -22,10 +23,15 @@ const WordComponent = ({ word, letterClasses }) => {
   );
 };
 
-const Temp = () => {
+const Gameform = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const words = useSelector((state) => state.words);
+
+  // modal window lost game
+  const [showModal, setShowModal] = useState(false);
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
 
   const [validated, setValidated] = useState(false);
   const [inputError, setInputError] = useState("");
@@ -79,19 +85,17 @@ const Temp = () => {
     console.log("answer: ", answer);
     console.log("targetWord: ", targetWord);
     setRoundsCount(roundsCount + 1);
-    if (roundsCount === 5) {
-      setInputError("Sorry, you have lost!");
-    }
 
     if (answer.every((letter) => letter === "correct") && roundsCount <= 5) {
       alert("Congrats! You have won!");
+    } else if (roundsCount === 5) {
+      handleShowModal();
     }
 
     setInputText("");
   };
 
-  const clearRound = (e) => {
-    e.preventDefault();
+  const clearRound = () => {
     dispatch(clearWords());
     const newWord = getRandomWord(WORDSLIST);
     setTargetWord(newWord);
@@ -114,13 +118,12 @@ const Temp = () => {
       </div>
       <Form noValidate onSubmit={handleSubmit} className="p-3 border rounded">
         <Form.Group controlId="wordInput">
-          <Form.Label>{t("forms.main.wordInputLabel")}</Form.Label>
+          <Form.Label hidden>{t("forms.main.wordInputLabel")}</Form.Label>
           <InputGroup hasValidation>
             <Form.Control
               type="text"
               name="body"
               placeholder={t("forms.main.wordInputPlaceholder")}
-              aria-label={t("forms.main.wordInputLabel")}
               required
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -136,13 +139,22 @@ const Temp = () => {
           <Button type="submit" variant="primary">
             {t("forms.main.buttonAdd")}
           </Button>
-          <Button type="button" variant="danger" onClick={clearRound}>
+          <Button type="submit" variant="danger" onClick={clearRound}>
             {t("forms.main.buttonClear")}
           </Button>
         </div>
       </Form>
+      <GameOverModal
+        show={showModal}
+        handleClose={handleCloseModal}
+        handleRestart={() => {
+          clearRound();
+          handleCloseModal();
+        }}
+        targetWord={targetWord}
+      />
     </div>
   );
 };
 
-export default Temp;
+export default Gameform;
