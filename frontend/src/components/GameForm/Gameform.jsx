@@ -8,7 +8,6 @@ import { Form, Button, InputGroup } from "react-bootstrap";
 import GameOverModal from "../Modals/GameOverModal.jsx";
 import VictoryModal from "../Modals/VicrotyModal.jsx";
 import getInputError from "../../errorHandler.js";
-import WordComponent from "./WordComponent.jsx";
 
 const Gameform = ({ initialWord = null }) => {
   const { t } = useTranslation();
@@ -34,12 +33,41 @@ const Gameform = ({ initialWord = null }) => {
     initialWord || getRandomWord(targetArray),
   );
 
+  const loadCellColours = () => {
+    const savedCellColours = localStorage.getItem("cellColours");
+    return savedCellColours
+      ? JSON.parse(savedCellColours)
+      : Array(5)
+          .fill(null)
+          .map(() => Array(5).fill(""));
+  };
+
+  const [cellColours, setCellColours] = useState(loadCellColours);
+  const [isCellColoursLoaded, setIsCellColoursLoaded] = useState(false);
+
+  useEffect(() => {
+    const savedCellColours = localStorage.getItem("cellColours");
+    if (savedCellColours && !isCellColoursLoaded) {
+      setCellColours(JSON.parse(savedCellColours));
+      setIsCellColoursLoaded(true);
+    }
+  }, [isCellColoursLoaded]);
+
+  useEffect(() => {
+    if (isCellColoursLoaded) {
+      localStorage.setItem("cellColours", JSON.stringify(cellColours));
+    }
+  }, [cellColours, isCellColoursLoaded]);
+
   useEffect(() => {
     fetch("/words.txt")
       .then((response) => response.text())
-      .then((words) => words.split("\n"))
-      .then((words) => words.map(word => word.toLowerCase()))
-      .then((words) => words.filter(word => word.length === 5))
+      .then((words) =>
+        words
+          .split("\n")
+          .map((word) => word.toLowerCase())
+          .filter((word) => word.length === 5),
+      )
       .then((words) => {
         setTargetArray(words);
         if (!initialWord) {
@@ -63,7 +91,7 @@ const Gameform = ({ initialWord = null }) => {
     dispatch(addWord({ body: inputText.trim().toLowerCase() }));
 
     const wordArray = inputText.toLowerCase().split("");
-    const answer = Array(5).fill("wrong");
+    const newAnswer = Array(5).fill("wrong");
 
     const letterCount = {};
     targetWord.split("").forEach((char) => {
@@ -72,30 +100,38 @@ const Gameform = ({ initialWord = null }) => {
 
     wordArray.forEach((char, index) => {
       if (char === targetWord[index]) {
-        answer[index] = "correct";
+        newAnswer[index] = "correct";
         letterCount[char]--;
       }
     });
 
     wordArray.forEach((char, index) => {
-      if (answer[index] === "wrong" && letterCount[char] > 0) {
-        answer[index] = "misplaced";
+      if (newAnswer[index] === "wrong" && letterCount[char] > 0) {
+        newAnswer[index] = "misplaced";
         letterCount[char]--;
       }
     });
 
-    setAnswers([...answers, answer]);
-    setCommonLetters(compareCommonLetters(inputText.trim().toLowerCase(), targetWord));
+    setCellColours((prevColours) => {
+      const updatedColours = prevColours.map((row, rowIndex) =>
+        rowIndex === roundsCount - 1 ? [...newAnswer] : [...row],
+      );
+      return updatedColours;
+    });
 
-    console.log("targetWord: ", targetWord);
+    setAnswers((prev) => [...prev, newAnswer]);
+    setCommonLetters(
+      compareCommonLetters(inputText.trim().toLowerCase(), targetWord),
+    );
 
-    if (answer.every((letter) => letter === "correct")) {
+    if (newAnswer.every((letter) => letter === "correct")) {
       handleShowModalVictory();
     } else if (roundsCount === 5) {
       handleShowModal();
     }
 
     setInputText("");
+    setRoundsCount((prev) => prev + 1);
   };
 
   const clearRound = () => {
@@ -106,19 +142,40 @@ const Gameform = ({ initialWord = null }) => {
     setRoundsCount(1);
     setCommonLetters({});
     setInputError("");
+    setCellColours(
+      Array(5)
+        .fill(null)
+        .map(() => Array(5).fill("")),
+    );
+    localStorage.removeItem("cellColours");
   };
 
   return (
     <div id="game-container">
       <div className="grid">
-        {words.map((word, index) => (
-          <WordComponent
-            key={index}
-            word={word.body}
-            letterClasses={answers[index] || []}
-          />
-        ))}
+        {Array(5)
+          .fill(0)
+          .map((_, rowIndex) => (
+            <div className="row" key={rowIndex}>
+              {Array(5)
+                .fill(0)
+                .map((_, colIndex) => {
+                  const word = words[rowIndex]?.body || "";
+                  const letter = word[colIndex] || "";
+                  const letterClass = cellColours[rowIndex]?.[colIndex] || "";
+                  return (
+                    <div
+                      className={`letter-cell ${letterClass}`}
+                      key={colIndex}
+                    >
+                      {letter}
+                    </div>
+                  );
+                })}
+            </div>
+          ))}
       </div>
+
       <Form noValidate onSubmit={handleSubmit} className="p-3 border rounded">
         <Form.Group controlId="wordInput">
           <Form.Label hidden>{t("forms.main.wordInputLabel")}</Form.Label>
@@ -137,7 +194,6 @@ const Gameform = ({ initialWord = null }) => {
             </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
-
         <div className="d-flex gap-2 mt-3">
           <Button type="submit" variant="primary">
             {t("forms.main.buttonAdd")}
@@ -147,7 +203,6 @@ const Gameform = ({ initialWord = null }) => {
           </Button>
         </div>
       </Form>
-
       <GameOverModal
         show={showModal}
         handleClose={handleCloseModal}
