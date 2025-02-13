@@ -11,7 +11,10 @@ play:
 	node src/index.js
 
 test:
-	npx mocha __tests__/wordie.test.js
+	npx playwright test
+
+test-ui:
+	npx playwright test --ui
 
 dev:
 	cd frontend; npm run dev
