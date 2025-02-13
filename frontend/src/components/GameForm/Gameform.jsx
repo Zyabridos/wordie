@@ -7,6 +7,7 @@ import { getRandomWord, compareCommonLetters } from "../../utils.js";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import GameOverModal from "../Modals/GameOverModal.jsx";
+import VictoryModal from "../Modals/VicrotyModal.jsx";
 
 const WordComponent = ({ word, letterClasses }) => {
   return (
@@ -23,20 +24,23 @@ const WordComponent = ({ word, letterClasses }) => {
   );
 };
 
-const Gameform = () => {
+const Gameform = ({ initialWord = null }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const words = useSelector((state) => state.words);
 
-  // modal window lost game
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
+  const [showModalVictory, setShowModalVictory] = useState(false);
+  const handleCloseModalVictory = () => setShowModalVictory(false);
+  const handleShowModalVictory = () => setShowModalVictory(true);
+
   const [validated, setValidated] = useState(false);
   const [inputError, setInputError] = useState("");
 
-  const [targetWord, setTargetWord] = useState(getRandomWord(WORDSLIST));
+  const [targetWord, setTargetWord] = useState(initialWord || getRandomWord(WORDSLIST));
   const [targetArray, setTargetArray] = useState(targetWord.split(""));
   const [inputText, setInputText] = useState("");
   const [answers, setAnswers] = useState([]);
@@ -82,12 +86,10 @@ const Gameform = () => {
     setAnswers([...answers, answer]);
     setCommonLetters(compareCommonLetters(inputText.trim(), targetWord));
 
-    console.log("answer: ", answer);
     console.log("targetWord: ", targetWord);
-    setRoundsCount(roundsCount + 1);
 
-    if (answer.every((letter) => letter === "correct") && roundsCount <= 5) {
-      alert("Congrats! You have won!");
+    if (answer.every((letter) => letter === "correct")) {
+      handleShowModalVictory();
     } else if (roundsCount === 5) {
       handleShowModal();
     }
@@ -97,7 +99,7 @@ const Gameform = () => {
 
   const clearRound = () => {
     dispatch(clearWords());
-    const newWord = getRandomWord(WORDSLIST);
+    const newWord = initialWord || getRandomWord(WORDSLIST);
     setTargetWord(newWord);
     setTargetArray(newWord.split(""));
     setAnswers([]);
@@ -139,11 +141,12 @@ const Gameform = () => {
           <Button type="submit" variant="primary">
             {t("forms.main.buttonAdd")}
           </Button>
-          <Button type="submit" variant="danger" onClick={clearRound}>
+          <Button type="button" variant="danger" onClick={clearRound}>
             {t("forms.main.buttonClear")}
           </Button>
         </div>
       </Form>
+
       <GameOverModal
         show={showModal}
         handleClose={handleCloseModal}
@@ -152,6 +155,15 @@ const Gameform = () => {
           handleCloseModal();
         }}
         targetWord={targetWord}
+      />
+
+      <VictoryModal
+        show={showModalVictory}
+        handleClose={handleCloseModalVictory}
+        handleRestart={() => {
+          clearRound();
+          handleCloseModalVictory();
+        }}
       />
     </div>
   );

@@ -1,3 +1,5 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/1465d93f63f05a276f3f/maintainability)](https://codeclimate.com/github/Zyabridos/wordle/maintainability)
+
 ### Description
 
 Wordie is a simple word-guessing game. The goal is to guess the correct five-letter word within five attempts.
@@ -21,7 +23,6 @@ $ make play
 
 1. You have 5 guesses.
 2. All words consist of exactly 5 letters.
-
 3. If the letter is correct and in the correct position, the letter will become green.
 4. If the letter is correct, but in the wrong position, the letter will become yellow.
 5. The yellow highlight will not show up if you have more of a letter than in the correct answer.

@@ -2,29 +2,29 @@ import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 
-const GameOverModal = ({ show, handleClose, handleRestart, targetWord }) => {
+const VictoryModal = ({ show, handleClose, handleRestart, targetWord }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal name="game-over-modal" show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+    <Modal name="victory-modal" show={show} onHide={handleClose} backdrop="static" keyboard={false}>
       <Modal.Header closeButton>
-        <Modal.Title>{t("modals.gameOver.title")}</Modal.Title>
+        <Modal.Title>{t("modals.victory.title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <p>
-          {t("modals.gameOver.message")} <strong>{targetWord}</strong>.
+          {t("modals.victory.message")}
         </p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
-          {t("modals.gameOver.buttonNo")}
+          {t("modals.victory.buttonClose")}
         </Button>
         <Button variant="primary" onClick={handleRestart}>
-          {t("modals.gameOver.buttonYes")}
+          {t("modals.victory.buttonRestart")}
         </Button>
       </Modal.Footer>
     </Modal>
   );
 };
 
-export default GameOverModal;
+export default VictoryModal;

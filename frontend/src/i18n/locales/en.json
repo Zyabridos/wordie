@@ -20,6 +20,12 @@
       "buttonYes": "Try again",
       "buttonNo": "Close"
     },
+    "victory" : {
+      "title": "Victory",
+      "message": "Congratulations! You won!",
+      "buttonClose": "Close",
+      "buttonRestart": "Play again"
+    },
     "rules": {
       "title": "How to play",
       "buttonClose": "Close",

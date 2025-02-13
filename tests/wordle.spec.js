@@ -1,4 +1,6 @@
 import { test, expect } from "@playwright/test";
+// import Gameform from "../frontend/src/components/GameForm/Gameform";
+// import { mount } from "playwright/experimental-ct-react";
 
 // NOTE: check vite config to set localhost 5173 as default
 test("The app shoild work locally", async ({ page, context }) => {
@@ -26,23 +28,12 @@ test("Losing after exactly 5 turns", async ({ page, context }) => {
   await input.click();
   await input.fill("xlink");
   await buttonAdd.click();
-  // TODO: make it more dynamic and not hardcode,
-  // or can use first four rounds to check the correct classes of the letters
-  await input.click();
-  await input.fill("xlink");
-  await buttonAdd.click();
-
-  await input.click();
-  await input.fill("xlink");
-  await buttonAdd.click();
-
-  await input.click();
-  await input.fill("xlink");
-  await buttonAdd.click();
-
-  await input.click();
-  await input.fill("xlink");
-  await buttonAdd.click();
+  
+  for (let i = 0; i < 5; i += 1) {
+    await input.click();
+    await input.fill("xlink");
+    await buttonAdd.click();
+  }
 
   await expect(gameOverModal).toBeVisible();
   // TODO: move to i18n
