@@ -6,7 +6,13 @@ const GameOverModal = ({ show, handleClose, handleRestart, targetWord }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal name="game-over-modal" show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+    <Modal
+      name="game-over-modal"
+      show={show}
+      onHide={handleClose}
+      backdrop="static"
+      keyboard={false}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{t("modals.gameOver.title")}</Modal.Title>
       </Modal.Header>

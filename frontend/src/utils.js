@@ -27,3 +27,10 @@ export const compareCommonLetters = (word1, word2) => {
 
   return result;
 };
+
+export const containsLettersAndOthers = (str) => {
+  const hasLetters = /[a-zA-Zа-яА-Я]/.test(str);
+  const hasNumbersOrSymbols = /[0-9!@#$%^&*()_+\/"'\[\]{}]/.test(str);
+
+  return hasLetters && hasNumbersOrSymbols;
+};

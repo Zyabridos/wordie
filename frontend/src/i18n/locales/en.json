@@ -2,14 +2,18 @@
   "forms": {
     "main": {
       "buttonAdd": "Add",
-      "buttonClear": "Clear",
+      "buttonClear": "Start again",
       "wordInputPlaceholder": "Type a word..."
     }
   },
   "navbar": {
     "title": "Wordie",
-    "contactUs": "Contact us",
-    "aboutUs": "About us",
+    "contactMe": {
+      "title": "Contact me",
+      "email": "Email",
+      "telegram": "Telegram"
+    },
+    "aboutMe": "About us",
     "rules": "Rules",
     "languageSwitcher": "Change language"
   },
@@ -20,7 +24,7 @@
       "buttonYes": "Try again",
       "buttonNo": "Close"
     },
-    "victory" : {
+    "victory": {
       "title": "Victory",
       "message": "Congratulations! You won!",
       "buttonClose": "Close",

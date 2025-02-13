@@ -6,14 +6,18 @@ const VictoryModal = ({ show, handleClose, handleRestart, targetWord }) => {
   const { t } = useTranslation();
 
   return (
-    <Modal name="victory-modal" show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+    <Modal
+      name="victory-modal"
+      show={show}
+      onHide={handleClose}
+      backdrop="static"
+      keyboard={false}
+    >
       <Modal.Header closeButton>
         <Modal.Title>{t("modals.victory.title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>
-          {t("modals.victory.message")}
-        </p>
+        <p>{t("modals.victory.message")}</p>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

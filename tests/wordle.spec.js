@@ -28,7 +28,7 @@ test("Losing after exactly 5 turns", async ({ page, context }) => {
   await input.click();
   await input.fill("xlink");
   await buttonAdd.click();
-  
+
   for (let i = 0; i < 5; i += 1) {
     await input.click();
     await input.fill("xlink");
@@ -38,7 +38,9 @@ test("Losing after exactly 5 turns", async ({ page, context }) => {
   await expect(gameOverModal).toBeVisible();
   // TODO: move to i18n
   await expect(gameOverModal).toContainText("Game over");
-  await expect(gameOverModal).toContainText("Sorry, you lost! The corrrect word was:");
+  await expect(gameOverModal).toContainText(
+    "Sorry, you lost! The corrrect word was:",
+  );
 
   const tryAgainButton = page.getByRole("button", { name: "Try again" });
   await expect(tryAgainButton).toBeVisible();

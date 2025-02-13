@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { addWord, clearWords } from "../../store/slices/wordsSlice.js";
 import "./Gameform.css";
 import WORDSLIST from "../../wordsList.js";
-import { getRandomWord, compareCommonLetters } from "../../utils.js";
+import {
+  getRandomWord,
+  compareCommonLetters,
+} from "../../utils.js";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import GameOverModal from "../Modals/GameOverModal.jsx";
 import VictoryModal from "../Modals/VicrotyModal.jsx";
+import getInputError from "../../errorHandler.js";
 
 const WordComponent = ({ word, letterClasses }) => {
   return (
@@ -40,7 +44,9 @@ const Gameform = ({ initialWord = null }) => {
   const [validated, setValidated] = useState(false);
   const [inputError, setInputError] = useState("");
 
-  const [targetWord, setTargetWord] = useState(initialWord || getRandomWord(WORDSLIST));
+  const [targetWord, setTargetWord] = useState(
+    initialWord || getRandomWord(WORDSLIST),
+  );
   const [targetArray, setTargetArray] = useState(targetWord.split(""));
   const [inputText, setInputText] = useState("");
   const [answers, setAnswers] = useState([]);
@@ -52,8 +58,8 @@ const Gameform = ({ initialWord = null }) => {
 
     setValidated(true);
 
-    if (inputText.trim().length !== 5) {
-      setInputError("Invalid input. Please enter a 5-letter word.");
+    if(getInputError(inputText.trim())) {
+      setInputError(getInputError(inputText.trim()));
       return;
     }
 
