@@ -9,21 +9,21 @@ import GameOverModal from "../Modals/GameOverModal.jsx";
 import VictoryModal from "../Modals/VicrotyModal.jsx";
 import getInputError from "../../errorHandler.js";
 import Grid from "../Grid.jsx";
+import useCellColours from "../../hooks/useCellColours.js";
 
-const Gameform = ({ initialWord = null }) => {
+const GameForm = ({ initialWord = null }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const words = useSelector((state) => state.words);
 
   const [showModal, setShowModal] = useState(false);
+  const [showModalVictory, setShowModalVictory] = useState(false);
+
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
-
-  const [showModalVictory, setShowModalVictory] = useState(false);
   const handleCloseModalVictory = () => setShowModalVictory(false);
   const handleShowModalVictory = () => setShowModalVictory(true);
 
-  const [validated, setValidated] = useState(false);
   const [inputError, setInputError] = useState("");
   const [targetArray, setTargetArray] = useState([]);
   const [inputText, setInputText] = useState("");
@@ -34,31 +34,7 @@ const Gameform = ({ initialWord = null }) => {
     initialWord || getRandomWord(targetArray),
   );
 
-  const loadCellColours = () => {
-    const savedCellColours = localStorage.getItem("cellColours");
-    return savedCellColours
-      ? JSON.parse(savedCellColours)
-      : Array(5)
-          .fill(null)
-          .map(() => Array(5).fill(""));
-  };
-
-  const [cellColours, setCellColours] = useState(loadCellColours);
-  const [isCellColoursLoaded, setIsCellColoursLoaded] = useState(false);
-
-  useEffect(() => {
-    const savedCellColours = localStorage.getItem("cellColours");
-    if (savedCellColours && !isCellColoursLoaded) {
-      setCellColours(JSON.parse(savedCellColours));
-      setIsCellColoursLoaded(true);
-    }
-  }, [isCellColoursLoaded]);
-
-  useEffect(() => {
-    if (isCellColoursLoaded) {
-      localStorage.setItem("cellColours", JSON.stringify(cellColours));
-    }
-  }, [cellColours, isCellColoursLoaded]);
+  const { cellColours, setCellColours } = useCellColours(roundsCount);
 
   useEffect(() => {
     fetch("/words.txt")
@@ -79,8 +55,6 @@ const Gameform = ({ initialWord = null }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    setValidated(true);
 
     if (getInputError(inputText.trim())) {
       setInputError(getInputError(inputText.trim()));
@@ -182,6 +156,7 @@ const Gameform = ({ initialWord = null }) => {
           </Button>
         </div>
       </Form>
+
       <GameOverModal
         show={showModal}
         handleClose={handleCloseModal}
@@ -204,4 +179,4 @@ const Gameform = ({ initialWord = null }) => {
   );
 };
 
-export default Gameform;
+export default GameForm;
