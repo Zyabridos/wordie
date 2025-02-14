@@ -68,6 +68,8 @@ const GameForm = ({ initialWord = null }) => {
     const wordArray = inputText.toLowerCase().split("");
     const newAnswer = Array(5).fill("wrong");
 
+    console.log(targetWord);
+
     const letterCount = {};
     targetWord.split("").forEach((char) => {
       letterCount[char] = (letterCount[char] || 0) + 1;

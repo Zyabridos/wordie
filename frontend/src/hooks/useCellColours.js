@@ -16,16 +16,16 @@ const useCellColours = (roundsCount) => {
     localStorage.setItem("cellColours", JSON.stringify(cellColours));
   }, [cellColours]);
 
-  useEffect(() => {
-    if (roundsCount === 1) {
-      setCellColours(
-        Array(5)
-          .fill(null)
-          .map(() => Array(5).fill("")),
-      );
-      localStorage.removeItem("cellColours");
-    }
-  }, [roundsCount]);
+  // useEffect(() => {
+  //   if (roundsCount === 1) {
+  //     setCellColours(
+  //       Array(5)
+  //         .fill(null)
+  //         .map(() => Array(5).fill("")),
+  //     );
+  //     localStorage.removeItem("cellColours");
+  //   }
+  // }, [roundsCount]);
 
   return { cellColours, setCellColours };
 };
