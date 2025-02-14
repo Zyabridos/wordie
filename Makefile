@@ -19,5 +19,9 @@ test-ui:
 dev:
 	cd frontend; npm run dev
 
+build:
+		rm -rf frontend/dist
+		npm run build --prefix frontend
+
 p:
 	npx prettier --write .

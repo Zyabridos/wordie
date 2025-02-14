@@ -51,5 +51,9 @@ test("Losing after exactly 5 turns", async ({ page, context }) => {
   await expect(gamePage).toBeVisible();
 });
 
+//TODO: add test to check that the colours don't change colour by page refresh
+
+//TODO: add check of contacts and redirects to github
+
 // npx playwright test
 // npx playwright test --ui

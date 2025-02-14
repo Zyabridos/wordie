@@ -8,6 +8,7 @@ import { Form, Button, InputGroup } from "react-bootstrap";
 import GameOverModal from "../Modals/GameOverModal.jsx";
 import VictoryModal from "../Modals/VicrotyModal.jsx";
 import getInputError from "../../errorHandler.js";
+import Grid from "../Grid.jsx";
 
 const Gameform = ({ initialWord = null }) => {
   const { t } = useTranslation();
@@ -152,29 +153,7 @@ const Gameform = ({ initialWord = null }) => {
 
   return (
     <div id="game-container">
-      <div className="grid">
-        {Array(5)
-          .fill(0)
-          .map((_, rowIndex) => (
-            <div className="row" key={rowIndex}>
-              {Array(5)
-                .fill(0)
-                .map((_, colIndex) => {
-                  const word = words[rowIndex]?.body || "";
-                  const letter = word[colIndex] || "";
-                  const letterClass = cellColours[rowIndex]?.[colIndex] || "";
-                  return (
-                    <div
-                      className={`letter-cell ${letterClass}`}
-                      key={colIndex}
-                    >
-                      {letter}
-                    </div>
-                  );
-                })}
-            </div>
-          ))}
-      </div>
+      <Grid words={words} cellColours={cellColours} />
 
       <Form noValidate onSubmit={handleSubmit} className="p-3 border rounded">
         <Form.Group controlId="wordInput">
