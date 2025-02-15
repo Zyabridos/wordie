@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addWord, clearWords } from "../../store/slices/wordsSlice.js";
-import "./Gameform.css";
+import "./GameForm.css";
 import { getRandomWord, compareCommonLetters } from "../../utils.js";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
@@ -47,7 +47,13 @@ const GameForm = ({ initialWord = null }) => {
       )
       .then((words) => {
         setTargetArray(words);
-        if (!initialWord) {
+
+        // TODO: think of a better way, so can write tests independantly
+        const storedWord = localStorage.getItem("targetWord");
+        if (storedWord) {
+          console.log("Using stored target word:", storedWord);
+          setTargetWord(storedWord);
+        } else if (!initialWord) {
           setTargetWord(getRandomWord(words));
         }
       });

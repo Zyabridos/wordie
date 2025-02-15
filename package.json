@@ -4,7 +4,10 @@
   "description": "A game, where you win if you guess a randomly generated word",
   "main": "index.js",
   "scripts": {
-    "test": "npx jest"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "type": "module",
   "repository": {
@@ -17,18 +20,23 @@
     "url": "https://github.com/Zyabridos/wordle/issues"
   },
   "homepage": "https://github.com/Zyabridos/wordle#readme",
-  "devDependencies": {
-    "@eslint/js": "^9.20.0",
-    "@playwright/test": "^1.50.1",
-    "@types/node": "^22.13.1",
-    "eslint": "^9.20.1",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-prettier": "^5.2.3",
-    "eslint-plugin-react": "^7.37.4",
-    "prettier": "^3.5.0"
-  },
   "dependencies": {
-    "@reduxjs/toolkit": "^2.5.1",
-    "lodash": "^4.17.21"
+    "bootstrap": "^5.3.3",
+    "i18next": "^24.2.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-i18next": "^15.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.19.0",
+    "eslint-plugin-react": "^7.37.4",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.18",
+    "globals": "^15.14.0",
+    "vite": "^6.1.0"
   }
 }

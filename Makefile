@@ -17,11 +17,11 @@ test-ui:
 	npx playwright test --ui
 
 dev:
-	cd frontend; npm run dev
+	npm run dev
 
 build:
-		rm -rf frontend/dist
-		npm run build --prefix frontend
+		rm -rf dist
+		npm run build
 
 p:
 	npx prettier --write .

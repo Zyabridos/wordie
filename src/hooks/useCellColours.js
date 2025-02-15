@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useCellColours = (roundsCount) => {
+const useCellColours = () => {
   const loadCellColours = () => {
     const savedCellColours = localStorage.getItem("cellColours");
     return savedCellColours
