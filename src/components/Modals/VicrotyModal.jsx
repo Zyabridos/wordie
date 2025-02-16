@@ -4,9 +4,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { closeModal } from "../../store/slices/modalSlice.js";
 
-const VictoryModal = ({ handleRestart }) => {
+const VictoryModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const handleRestart = () => {
+    dispatch(closeModal());
+    window.location.reload();
+  };
 
   return (
     <Modal show onHide={() => dispatch(closeModal())} centered>

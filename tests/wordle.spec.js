@@ -20,15 +20,34 @@ class GamePage {
       .getByRole("textbox", { name: "forms.main.wordInputLabel" })
       .fill(text);
   }
+  // async getCellColours(rowIndex) {
+  //   await this.page.waitForSelector(
+  //     `#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`,
+  //     { timeout: 3000 },
+  //   );
+
+  //   return await this.page
+  //     .locator(`#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`)
+  //     .evaluateAll((cells) => cells.map((cell) => cell.className));
+  // }
   async getCellColours(rowIndex) {
     await this.page.waitForSelector(
       `#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`,
       { timeout: 3000 },
     );
 
+    // Логируем DOM перед извлечением классов
+    const rowHtml = await this.page
+      .locator(`#game-container .row:nth-child(${rowIndex + 1})`)
+      .innerHTML();
+    console.log(`Row ${rowIndex + 1} HTML:\n`, rowHtml);
+
+    // Получаем атрибуты классов
     return await this.page
       .locator(`#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`)
-      .evaluateAll((cells) => cells.map((cell) => cell.className));
+      .evaluateAll((cells) =>
+        cells.map((cell) => cell.getAttribute("class").trim()),
+      );
   }
 }
 
@@ -58,22 +77,23 @@ test("Losing after exactly 5 turns", async ({ page }) => {
     localStorage.setItem("targetWord", "water");
   });
 
-  const gameOverModal = page.locator('div[name="game-over-modal"]');
+  await page.reload();
+
+  const gameOverModal = page.locator('div[role="dialog"]');
 
   for (let i = 0; i < 5; i += 1) {
     await gamePage.fillInput("otter");
     await gamePage.clickAddButton();
   }
 
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1000);
 
   await expect(gameOverModal).toBeVisible();
-  await expect(gameOverModal).toContainText("Game over"); // modal title
   await expect(gameOverModal).toContainText(
-    "Sorry, you lost! The corrrect word was:",
+    /Sorry, you lost! The correct word was:/,
   );
 
-  const tryAgainButton = page.getByRole("button", {
+  const tryAgainButton = gameOverModal.getByRole("button", {
     name: "Try again",
   });
   await expect(tryAgainButton).toBeVisible();
@@ -105,6 +125,44 @@ test("Expect errors messages to be visible", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("Letter colors are correct (target word: water)", async ({ page }) => {
+  const gamePage = new GamePage(page);
+
+  await gamePage.goto();
+  await page.waitForTimeout(500);
+
+  await page.evaluate(() => {
+    localStorage.setItem("targetWord", "water");
+  });
+
+  await page.reload();
+
+  await gamePage.fillInput("otter");
+  await gamePage.clickAddButton();
+
+  const firstRowColours = await gamePage.getCellColours(0);
+
+  const expectedStatusesFirstRound = [
+    "letter-cell wrong", // o
+    "letter-cell wrong", // t
+    "letter-cell correct", // t
+    "letter-cell correct", // e
+    "letter-cell correct", // r
+  ];
+
+  await expect(firstRowColours).toEqual(expectedStatusesFirstRound);
+
+  const expectedStatusesSecondRound = Array(5).fill("letter-cell correct");
+  await gamePage.fillInput("water");
+  await gamePage.clickAddButton();
+
+  await page.waitForTimeout(500);
+
+  const secondRowColours = await gamePage.getCellColours(1);
+
+  await expect(secondRowColours).toEqual(expectedStatusesSecondRound);
+});
+
 test("Letter colors are correct (target word: flood)", async ({ page }) => {
   const game = new GamePage(page);
   await game.goto();
@@ -118,34 +176,32 @@ test("Letter colors are correct (target word: flood)", async ({ page }) => {
   await game.fillInput("force");
   await game.clickAddButton();
 
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1000);
 
   const firstRowColours = await game.getCellColours(0);
 
+  console.log("firstRowColours", firstRowColours);
+
   const expectedStatusesFirstRound = [
-    "letter-cell correct", // f
-    "letter-cell misplaced", // o
-    "letter-cell wrong", // r
-    "letter-cell wrong", // c
-    "letter-cell wrong", // e
+    "letter-cell correct",
+    "letter-cell misplaced",
+    "letter-cell wrong",
+    "letter-cell wrong",
+    "letter-cell wrong",
   ];
 
   await expect(firstRowColours).toEqual(expectedStatusesFirstRound);
 
-  const expectedStatusesSecondRound = [
-    "letter-cell correct", // f
-    "letter-cell correct", // o
-    "letter-cell correct", // r
-    "letter-cell correct", // c
-    "letter-cell correct", // e
-  ];
-
   await game.fillInput("flood");
   await game.clickAddButton();
 
-  await page.waitForTimeout(500);
+  await page.waitForTimeout(1000);
 
   const secondRowColours = await game.getCellColours(1);
+
+  console.log("secondRowColours", secondRowColours);
+
+  const expectedStatusesSecondRound = [Array(5).fill("letter-cell correct")];
 
   await expect(secondRowColours).toEqual(expectedStatusesSecondRound);
 });

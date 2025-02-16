@@ -20,9 +20,9 @@
   "modals": {
     "gameOver": {
       "title": "Game over",
-      "message": "Sorry, you lost! The corrrect word was: ",
-      "buttonYes": "Try again",
-      "buttonNo": "Close"
+      "message": "Sorry, you lost! The correct word was: ",
+      "buttonRestart": "Try again",
+      "buttonClose": "Close"
     },
     "victory": {
       "title": "Victory",
