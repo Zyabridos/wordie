@@ -5,7 +5,7 @@ class GamePage {
   }
 
   async goto() {
-    await this.page.goto("http://localhost:5173");
+    await this.page.goto("http://localhost:3000");
   }
 
   async clickAddButton() {
@@ -41,9 +41,8 @@ test.beforeEach(async ({ page }) => {
   await gamePage.goto();
 });
 
-// NOTE: check vite config to set localhost 5173 as default
 test("Open the page", async ({ page, context }) => {
-  await page.goto("http://localhost:5173");
+  await page.goto("http://localhost:3000");
   await context.setOffline(true);
 
   const input = await page.getByRole("textbox", {
