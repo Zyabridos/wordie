@@ -1,51 +1,35 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./GameForm.css";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import Grid from "../Grid.jsx";
 import useCellColours from "../../hooks/useCellColours.js";
-import useModalState from "../../hooks/useModalState.js";
 import ModalManager from "../Modals/ModalManager.jsx";
-import useGameLogic from "../../hooks/useGameLogic.js";
-import useTargetWord from "../../hooks/useTargetWord.js";
+import { setInputText } from "../../store/slices/gameSlice.js";
+import useClearRound from "../../hooks/useClearRound.js";
+import useHandleSubmit from "../../hooks/useHandleSubmit.js";
+import useFetchAndSetTargetWord from "../../hooks/useFetchAndSetTargetWord.js";
 
-const GameForm = ({ initialWord }) => {
+const GameForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  useFetchAndSetTargetWord();
+
   const words = useSelector((state) => state.words);
-  const { openModal } = useModalState();
+  const inputText = useSelector((state) => state.game.inputText);
+  const inputError = useSelector((state) => state.game.inputError);
 
-  // const [targetArray, setTargetArray] = useState([]);
-  // const [targetWord, setTargetWord] = useState(initialWord || "");
-  const { targetWord, setTargetWord, targetArray } = useTargetWord(initialWord);
-  const [answers, setAnswers] = useState([]);
-  const [roundsCount, setRoundsCount] = useState(1);
-  const [commonLetters, setCommonLetters] = useState({});
-  const [inputError, setInputError] = useState("");
+  // const targetWord = useSelector((state) => state.game.targetWord);
+  // console.log(targetWord);
 
-  console.log("targetWord", targetWord);
-
-  const { cellColours, setCellColours } = useCellColours(roundsCount);
-
-  const { clearRound, handleSubmit, inputText, setInputText } = useGameLogic({
-    dispatch,
-    setTargetWord,
-    setAnswers,
-    setRoundsCount,
-    setCommonLetters,
-    setInputError,
-    setCellColours,
-    targetArray,
-    initialWord,
-    openModal,
-    targetWord,
-    roundsCount,
-  });
+  const { cellColours } = useCellColours();
+  const clearRound = useClearRound();
+  const handleSubmit = useHandleSubmit();
 
   return (
     <div id="game-container">
-      <Grid words={words} cellColours={cellColours} />
+      <Grid words={words.words} cellColours={cellColours} />
 
       <Form noValidate onSubmit={handleSubmit} className="p-3 border rounded">
         <Form.Group controlId="wordInput">
@@ -57,7 +41,7 @@ const GameForm = ({ initialWord }) => {
               placeholder={t("forms.main.wordInputPlaceholder")}
               required
               value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
+              onChange={(e) => dispatch(setInputText(e.target.value))}
               isInvalid={!!inputError}
             />
             <Form.Control.Feedback type="invalid">
@@ -74,7 +58,6 @@ const GameForm = ({ initialWord }) => {
           </Button>
         </div>
       </Form>
-
       <ModalManager />
     </div>
   );

@@ -1,33 +1,23 @@
-import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setCellColours,
+  resetCellColours,
+} from "../store/slices/cellColoursSlice.js";
 
 const useCellColours = () => {
-  const loadCellColours = () => {
-    const savedCellColours = localStorage.getItem("cellColours");
-    return savedCellColours
-      ? JSON.parse(savedCellColours)
-      : Array(5)
-          .fill(null)
-          .map(() => Array(5).fill(""));
+  const dispatch = useDispatch();
+  const cellColours =
+    useSelector((state) => state.cellColours.cellColours) || [];
+
+  const updateCellColours = (newColours) => {
+    dispatch(setCellColours(newColours));
   };
 
-  const [cellColours, setCellColours] = useState(loadCellColours);
+  const clearColours = () => {
+    dispatch(resetCellColours());
+  };
 
-  useEffect(() => {
-    localStorage.setItem("cellColours", JSON.stringify(cellColours));
-  }, [cellColours]);
-
-  // useEffect(() => {
-  //   if (roundsCount === 1) {
-  //     setCellColours(
-  //       Array(5)
-  //         .fill(null)
-  //         .map(() => Array(5).fill("")),
-  //     );
-  //     localStorage.removeItem("cellColours");
-  //   }
-  // }, [roundsCount]);
-
-  return { cellColours, setCellColours };
+  return { cellColours, updateCellColours, clearColours };
 };
 
 export default useCellColours;

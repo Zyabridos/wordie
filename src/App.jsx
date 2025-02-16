@@ -1,6 +1,5 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import React from "react";
 import { Provider } from "react-redux";
 import store from "./store/store.js";
 import Gameform from "./components/GameForm/Gameform.jsx";

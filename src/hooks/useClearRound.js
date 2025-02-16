@@ -1,43 +1,38 @@
 import { useCallback } from "react";
-import { getRandomWord } from "../utils.js";
+import { useDispatch, useSelector } from "react-redux";
 import { clearWords } from "../store/slices/wordsSlice.js";
-
-const useClearRound = (
-  dispatch,
+import {
   setTargetWord,
-  setAnswers,
-  setRoundsCount,
-  setCommonLetters,
-  setInputError,
-  setCellColours,
-  targetArray,
-  initialWord,
-) => {
+  resetRoundsCount,
+  resetAnswers,
+  resetCommonLetters,
+  resetInputError,
+  resetInputText,
+} from "../store/slices/gameSlice.js";
+import useCellColours from "./useCellColours.js";
+import { getRandomWord } from "../utils.js";
+
+const useClearRound = () => {
+  const dispatch = useDispatch();
+  const targetArray = useSelector((state) => state.game.targetArray);
+  const { clearColours } = useCellColours();
+
   return useCallback(() => {
     dispatch(clearWords());
-    const newWord = initialWord || getRandomWord(targetArray);
-    setTargetWord(newWord);
-    setAnswers([]);
-    setRoundsCount(1);
-    setCommonLetters({});
-    setInputError("");
-    setCellColours(
-      Array(5)
-        .fill(null)
-        .map(() => Array(5).fill("")),
-    );
+
+    const newWord = getRandomWord(targetArray);
+    localStorage.setItem("targetWord", newWord);
+    dispatch(setTargetWord(newWord));
+
+    dispatch(resetAnswers());
+    dispatch(resetCommonLetters());
+    dispatch(resetRoundsCount());
+    dispatch(resetInputError());
+    dispatch(resetInputText());
+
+    clearColours();
     localStorage.removeItem("cellColours");
-  }, [
-    dispatch,
-    setTargetWord,
-    setAnswers,
-    setRoundsCount,
-    setCommonLetters,
-    setInputError,
-    setCellColours,
-    targetArray,
-    initialWord,
-  ]);
+  }, [dispatch, targetArray, clearColours]);
 };
 
 export default useClearRound;

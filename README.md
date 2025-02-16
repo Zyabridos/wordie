@@ -15,25 +15,29 @@ Wordie is a simple word-guessing game. The goal is to guess the correct five-let
 To play the game locally, follow these steps:
 
 ### **Clone the repository**
+
 ```sh
 git clone https://github.com/zyabridos/your-repo.git
 cd your-repo
 ```
 
 ### **Install dependencies**
+
 ```sh
 npm ci
 ```
 
 ### **Build the project**
+
 ```sh
 make build
 ```
 
 ### **Open the game in your browser**
+
 After running the game, check your terminal for the **localhost URL** (e.g., `http://localhost:3000`) and open it in your browser.
 
-### **Rules
+### \*\*Rules
 
 1. You have 5 guesses.
 2. All words consist of exactly 5 letters.
@@ -63,16 +67,19 @@ After running the game, check your terminal for the **localhost URL** (e.g., `ht
 ## 🛠 Additional Commands
 
 ### 🔄 **Run in development mode**
+
 ```sh
 npm run dev
 ```
 
 ### 🧪 **Run tests**
+
 ```sh
 npx playwright test
 ```
 
 ### 🧹 **Format the code**
+
 ```sh
 npx prettier --write .
 ```

@@ -1,7 +1,7 @@
 .nav-links-container {
   display: flex;
   align-items: center;
-  gap: 20px; /* Расстояние между элементами */
+  gap: 20px;
 }
 
 .nav-link-custom,
