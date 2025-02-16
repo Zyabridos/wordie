@@ -8,18 +8,32 @@ Wordie is a simple word-guessing game. The goal is to guess the correct five-let
 
 - Node.js v20.17.0 or higher
 
-## Setup
+# 🎮 How to Play the Game
 
-To set up and start the game locally, run the following commands in your terminal:
+## Installation and Setup
 
+To play the game locally, follow these steps:
+
+### **Clone the repository**
 ```sh
-$ git clone https://github.com/Zyabridos/wordie
-$ cd wordie
-$ make install
-$ make play
+git clone https://github.com/zyabridos/your-repo.git
+cd your-repo
 ```
 
-## How to play:
+### **Install dependencies**
+```sh
+npm ci
+```
+
+### **Build the project**
+```sh
+make build
+```
+
+### **Open the game in your browser**
+After running the game, check your terminal for the **localhost URL** (e.g., `http://localhost:3000`) and open it in your browser.
+
+### **Rules
 
 1. You have 5 guesses.
 2. All words consist of exactly 5 letters.
@@ -45,3 +59,20 @@ $ make play
 
 - `T`, `E`, `R` → 🟩 (Correct letters in the correct positions)
 - The first `T` in `OTTER` will not be yellow because `WATER` contains only **one** `T`.
+
+## 🛠 Additional Commands
+
+### 🔄 **Run in development mode**
+```sh
+npm run dev
+```
+
+### 🧪 **Run tests**
+```sh
+npx playwright test
+```
+
+### 🧹 **Format the code**
+```sh
+npx prettier --write .
+```
