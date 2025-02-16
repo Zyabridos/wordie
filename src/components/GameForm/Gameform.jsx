@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import "./GameForm.css";
+import "./Gameform.css";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import Grid from "../Grid.jsx";

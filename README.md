@@ -31,13 +31,20 @@ npm ci
 
 ```sh
 make build
+
+```
+### **Run the game**
+The game is only playable in development mode.
+
+```sh
+make dev
 ```
 
 ### **Open the game in your browser**
 
 After running the game, check your terminal for the **localhost URL** (e.g., `http://localhost:3000`) and open it in your browser.
 
-### \*\*Rules
+### **Rules
 
 1. You have 5 guesses.
 2. All words consist of exactly 5 letters.
