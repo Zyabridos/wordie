@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Zyabridos/wordle#readme",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.1",
     "bootstrap": "^5.3.3",
     "i18next": "^24.2.2",
     "react": "^19.0.0",
