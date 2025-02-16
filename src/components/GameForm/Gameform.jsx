@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./GameForm.css";
-import { getRandomWord, fetchWords } from "../../utils.js";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import Grid from "../Grid.jsx";
@@ -9,6 +8,7 @@ import useCellColours from "../../hooks/useCellColours.js";
 import useModalState from "../../hooks/useModalState.js";
 import ModalManager from "../Modals/ModalManager.jsx";
 import useGameLogic from "../../hooks/useGameLogic.js";
+import useTargetWord from "../../hooks/useTargetWord.js";
 
 const GameForm = ({ initialWord }) => {
   const { t } = useTranslation();
@@ -16,8 +16,9 @@ const GameForm = ({ initialWord }) => {
   const words = useSelector((state) => state.words);
   const { openModal } = useModalState();
 
-  const [targetArray, setTargetArray] = useState([]);
-  const [targetWord, setTargetWord] = useState(initialWord || "");
+  // const [targetArray, setTargetArray] = useState([]);
+  // const [targetWord, setTargetWord] = useState(initialWord || "");
+  const { targetWord, setTargetWord, targetArray } = useTargetWord(initialWord);
   const [answers, setAnswers] = useState([]);
   const [roundsCount, setRoundsCount] = useState(1);
   const [commonLetters, setCommonLetters] = useState({});
@@ -41,18 +42,6 @@ const GameForm = ({ initialWord }) => {
     targetWord,
     roundsCount,
   });
-
-  useEffect(() => {
-    fetchWords().then((words) => {
-      setTargetArray(words);
-      const storedWord = localStorage.getItem("targetWord");
-      if (storedWord) {
-        setTargetWord(storedWord);
-      } else if (!initialWord) {
-        setTargetWord(getRandomWord(words));
-      }
-    });
-  }, []);
 
   return (
     <div id="game-container">
