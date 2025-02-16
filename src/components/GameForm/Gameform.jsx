@@ -23,6 +23,8 @@ const GameForm = ({ initialWord }) => {
   const [commonLetters, setCommonLetters] = useState({});
   const [inputError, setInputError] = useState("");
 
+  console.log("targetWord", targetWord);
+
   const { cellColours, setCellColours } = useCellColours(roundsCount);
 
   const { clearRound, handleSubmit, inputText, setInputText } = useGameLogic({

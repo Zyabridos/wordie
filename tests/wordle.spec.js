@@ -20,29 +20,12 @@ class GamePage {
       .getByRole("textbox", { name: "forms.main.wordInputLabel" })
       .fill(text);
   }
-  // async getCellColours(rowIndex) {
-  //   await this.page.waitForSelector(
-  //     `#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`,
-  //     { timeout: 3000 },
-  //   );
-
-  //   return await this.page
-  //     .locator(`#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`)
-  //     .evaluateAll((cells) => cells.map((cell) => cell.className));
-  // }
   async getCellColours(rowIndex) {
     await this.page.waitForSelector(
       `#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`,
       { timeout: 3000 },
     );
 
-    // Логируем DOM перед извлечением классов
-    const rowHtml = await this.page
-      .locator(`#game-container .row:nth-child(${rowIndex + 1})`)
-      .innerHTML();
-    console.log(`Row ${rowIndex + 1} HTML:\n`, rowHtml);
-
-    // Получаем атрибуты классов
     return await this.page
       .locator(`#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`)
       .evaluateAll((cells) =>
@@ -180,8 +163,6 @@ test("Letter colors are correct (target word: flood)", async ({ page }) => {
 
   const firstRowColours = await game.getCellColours(0);
 
-  console.log("firstRowColours", firstRowColours);
-
   const expectedStatusesFirstRound = [
     "letter-cell correct",
     "letter-cell misplaced",
@@ -199,9 +180,7 @@ test("Letter colors are correct (target word: flood)", async ({ page }) => {
 
   const secondRowColours = await game.getCellColours(1);
 
-  console.log("secondRowColours", secondRowColours);
-
-  const expectedStatusesSecondRound = [Array(5).fill("letter-cell correct")];
+  const expectedStatusesSecondRound = Array(5).fill("letter-cell correct");
 
   await expect(secondRowColours).toEqual(expectedStatusesSecondRound);
 });

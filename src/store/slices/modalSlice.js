@@ -14,15 +14,11 @@ const modalSlice = createSlice({
       state.isOpen = true;
       state.type = action.payload.type;
       state.props = { ...action.payload.props };
-
-      console.log("🟢 Modal opened with props:", state.props); // Проверка в консоли
     },
     closeModal: (state) => {
       state.isOpen = false;
       state.type = null;
       state.props = {};
-
-      console.log("🔴 Modal closed"); // Проверка в консоли
     },
   },
 });
