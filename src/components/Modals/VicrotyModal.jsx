@@ -1,18 +1,15 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { closeModal } from "../../store/slices/modalSlice.js";
 
-const VictoryModal = ({ show, handleClose, handleRestart, targetWord }) => {
+const VictoryModal = ({ handleRestart }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   return (
-    <Modal
-      name="victory-modal"
-      show={show}
-      onHide={handleClose}
-      backdrop="static"
-      keyboard={false}
-    >
+    <Modal show onHide={() => dispatch(closeModal())} centered>
       <Modal.Header closeButton>
         <Modal.Title>{t("modals.victory.title")}</Modal.Title>
       </Modal.Header>
@@ -20,7 +17,7 @@ const VictoryModal = ({ show, handleClose, handleRestart, targetWord }) => {
         <p>{t("modals.victory.message")}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+        <Button variant="secondary" onClick={() => dispatch(closeModal())}>
           {t("modals.victory.buttonClose")}
         </Button>
         <Button variant="primary" onClick={handleRestart}>

@@ -1,32 +1,27 @@
 import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { closeModal } from "../../store/slices/modalSlice.js";
 
-const GameOverModal = ({ show, handleClose, handleRestart, targetWord }) => {
+const GameOverModal = ({ targetWord, handleRestart }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   return (
-    <Modal
-      name="game-over-modal"
-      show={show}
-      onHide={handleClose}
-      backdrop="static"
-      keyboard={false}
-    >
+    <Modal show onHide={() => dispatch(closeModal())} centered>
       <Modal.Header closeButton>
         <Modal.Title>{t("modals.gameOver.title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>
-          {t("modals.gameOver.message")} <strong>{targetWord}</strong>.
-        </p>
+        <p>{t("modals.gameOver.message", { targetWord })}</p>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          {t("modals.gameOver.buttonNo")}
+        <Button variant="secondary" onClick={() => dispatch(closeModal())}>
+          {t("modals.gameOver.buttonClose")}
         </Button>
         <Button variant="primary" onClick={handleRestart}>
-          {t("modals.gameOver.buttonYes")}
+          {t("modals.gameOver.buttonRestart")}
         </Button>
       </Modal.Footer>
     </Modal>

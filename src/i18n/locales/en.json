@@ -39,5 +39,12 @@
       "rule4": "If the letter is correct, but in the wrong position, the letter will become yellow",
       "rule5": "The yellow highlight will not show up if you have more of a letter than in the correct answer"
     }
+  },
+  "errors": {
+    "invalidInput": {
+      "letterLengtth": "Invalid input. Please enter a 5-letter word",
+      "invalidSymbols": "Invalid input. Please enter only english letters",
+      "notInDictionary": "Sorry, we don't have this word in our dictionary. Try another one"
+    }
   }
 }

@@ -5,24 +5,26 @@ import "./GameForm.css";
 import { getRandomWord, compareCommonLetters } from "../../utils.js";
 import { useTranslation } from "react-i18next";
 import { Form, Button, InputGroup } from "react-bootstrap";
-import GameOverModal from "../Modals/GameOverModal.jsx";
-import VictoryModal from "../Modals/VicrotyModal.jsx";
 import getInputError from "../../errorHandler.js";
 import Grid from "../Grid.jsx";
 import useCellColours from "../../hooks/useCellColours.js";
+import { fetchWords } from "../../utils.js";
+import useModalState from "../../hooks/useModalState.js";
+import ModalManager from "../Modals/ModalManager.jsx";
 
-const GameForm = ({ initialWord = null }) => {
+const GameForm = ({ initialWord }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const words = useSelector((state) => state.words);
 
-  const [showModal, setShowModal] = useState(false);
-  const [showModalVictory, setShowModalVictory] = useState(false);
-
-  const handleCloseModal = () => setShowModal(false);
-  const handleShowModal = () => setShowModal(true);
-  const handleCloseModalVictory = () => setShowModalVictory(false);
-  const handleShowModalVictory = () => setShowModalVictory(true);
+  const {
+    showModal,
+    showModalVictory,
+    openGameOver,
+    closeGameOver,
+    openVictory,
+    closeVictory,
+  } = useModalState(); // Используем новый хук
 
   const [inputError, setInputError] = useState("");
   const [targetArray, setTargetArray] = useState([]);
@@ -37,33 +39,24 @@ const GameForm = ({ initialWord = null }) => {
   const { cellColours, setCellColours } = useCellColours(roundsCount);
 
   useEffect(() => {
-    fetch("/words.txt")
-      .then((response) => response.text())
-      .then((words) =>
-        words
-          .split("\n")
-          .map((word) => word.toLowerCase())
-          .filter((word) => word.length === 5),
-      )
-      .then((words) => {
-        setTargetArray(words);
+    fetchWords().then((words) => {
+      setTargetArray(words);
 
-        // TODO: think of a better way, so can write tests independantly
-        const storedWord = localStorage.getItem("targetWord");
-        if (storedWord) {
-          console.log("Using stored target word:", storedWord);
-          setTargetWord(storedWord);
-        } else if (!initialWord) {
-          setTargetWord(getRandomWord(words));
-        }
-      });
+      const storedWord = localStorage.getItem("targetWord");
+      if (storedWord) {
+        setTargetWord(storedWord);
+      } else if (!initialWord) {
+        setTargetWord(getRandomWord(words));
+      }
+    });
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (getInputError(inputText.trim())) {
-      setInputError(getInputError(inputText.trim()));
+    const error = await getInputError(inputText.trim());
+    if (error) {
+      setInputError(error);
       return;
     }
 
@@ -73,8 +66,6 @@ const GameForm = ({ initialWord = null }) => {
 
     const wordArray = inputText.toLowerCase().split("");
     const newAnswer = Array(5).fill("wrong");
-
-    console.log(targetWord);
 
     const letterCount = {};
     targetWord.split("").forEach((char) => {
@@ -108,9 +99,9 @@ const GameForm = ({ initialWord = null }) => {
     );
 
     if (newAnswer.every((letter) => letter === "correct")) {
-      handleShowModalVictory();
+      openVictory();
     } else if (roundsCount === 5) {
-      handleShowModal();
+      openGameOver();
     }
 
     setInputText("");
@@ -164,25 +155,7 @@ const GameForm = ({ initialWord = null }) => {
           </Button>
         </div>
       </Form>
-
-      <GameOverModal
-        show={showModal}
-        handleClose={handleCloseModal}
-        handleRestart={() => {
-          clearRound();
-          handleCloseModal();
-        }}
-        targetWord={targetWord}
-      />
-
-      <VictoryModal
-        show={showModalVictory}
-        handleClose={handleCloseModalVictory}
-        handleRestart={() => {
-          clearRound();
-          handleCloseModalVictory();
-        }}
-      />
+      <ModalManager />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import { v4 as uuidv4 } from 'uuid';
 
 const Grid = ({ words, cellColours }) => {
   return (
@@ -6,7 +7,7 @@ const Grid = ({ words, cellColours }) => {
       {Array(5)
         .fill(0)
         .map((_, rowIndex) => (
-          <div className="row" key={rowIndex}>
+          <div className="row" key={uuidv4()}>
             {Array(5)
               .fill(0)
               .map((_, colIndex) => {
@@ -14,7 +15,7 @@ const Grid = ({ words, cellColours }) => {
                 const letter = word[colIndex] || "";
                 const letterClass = cellColours[rowIndex]?.[colIndex] || "";
                 return (
-                  <div className={`letter-cell ${letterClass}`} key={colIndex}>
+                  <div className={`letter-cell ${letterClass}`} key={uuidv4()}>
                     {letter}
                   </div>
                 );

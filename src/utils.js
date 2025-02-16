@@ -28,11 +28,16 @@ export const compareCommonLetters = (word1, word2) => {
   return result;
 };
 
-export const containsOnlyLetters = (str) => {
-  const hasLetters = /[a-zA-Z]/.test(str);
-  const hasNumbersOrSymbols = /[0-9!@#$%^&*();_+\/"'\[\]{}]/.test(str);
-
-  return (
-    (hasLetters && hasNumbersOrSymbols) || (hasLetters && !hasNumbersOrSymbols)
-  );
+export const fetchWords = async () => {
+  try {
+    const response = await fetch("/words.txt");
+    const text = await response.text();
+    return text
+      .split("\n")
+      .map((word) => word.toLowerCase())
+      .filter((word) => word.length === 5);
+  } catch (error) {
+    console.error("Ошибка загрузки слов:", error);
+    return [];
+  }
 };

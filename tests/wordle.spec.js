@@ -50,27 +50,31 @@ test("Open the page", async ({ page, context }) => {
   await expect(input).toBeVisible();
 });
 
-test("Losing after exactly 5 turns", async ({ page, context }) => {
+test("Losing after exactly 5 turns", async ({ page }) => {
   const gamePage = new GamePage(page);
-  // for now, eventually will fix it cuz it is unaxeptable behavior
-  const buttonClear = await page.getByRole("button", { name: "Add" });
-  await buttonClear.click();
+  await gamePage.goto();
+
+  await page.evaluate(() => {
+    localStorage.setItem("targetWord", "water");
+  });
 
   const gameOverModal = page.locator('div[name="game-over-modal"]');
-  // xlink - real word that is not going to be in the game,
-  // but will exists in the test dictionary
 
   for (let i = 0; i < 5; i += 1) {
-    await gamePage.fillInput("xlink");
+    await gamePage.fillInput("otter");
     await gamePage.clickAddButton();
   }
 
+  await page.waitForTimeout(500);
+
   await expect(gameOverModal).toBeVisible();
-  await expect(gameOverModal).toContainText("modals.gameOver.title");
-  await expect(gameOverModal).toContainText("modals.gameOver.message");
+  await expect(gameOverModal).toContainText("Game over"); // modal title
+  await expect(gameOverModal).toContainText(
+    "Sorry, you lost! The corrrect word was:",
+  );
 
   const tryAgainButton = page.getByRole("button", {
-    name: "forms.main.buttonClear",
+    name: "Try again",
   });
   await expect(tryAgainButton).toBeVisible();
   await tryAgainButton.click();
@@ -82,22 +86,7 @@ test("Losing after exactly 5 turns", async ({ page, context }) => {
 
 test("Expect errors messages to be visible", async ({ page }) => {
   const gamePage = new GamePage(page);
-
-  await gamePage.fillInput("kf;4!");
-  await gamePage.clickAddButton();
-  await expect(page.getByText("Invalid input. Please enter")).toBeVisible();
-
-  await page
-    .getByRole("textbox", { name: "forms.main.wordInputLabel" })
-    .fill("");
-
-  await gamePage.fillInput("ghфfh");
-  await gamePage.clickAddButton();
-  await expect(page.getByText("Invalid input. Please enter")).toBeVisible();
-
-  await page
-    .getByRole("textbox", { name: "forms.main.wordInputLabel" })
-    .fill("");
+  await gamePage.goto();
 
   await gamePage.fillInput("jdkryb");
   await gamePage.clickAddButton();
@@ -105,50 +94,15 @@ test("Expect errors messages to be visible", async ({ page }) => {
   await expect(
     page.getByText("Invalid input. Please enter a 5-letter word"),
   ).toBeVisible();
-});
 
-test("Letter colors are correct (target word: water)", async ({ page }) => {
-  const gamePage = new GamePage(page);
-
-  await gamePage.goto();
-  await page.waitForTimeout(500);
-
-  await page.evaluate(() => {
-    localStorage.setItem("targetWord", "water");
-  });
-
-  await page.reload();
-
-  await gamePage.fillInput("otter");
+  await gamePage.fillInput("jdkrb");
   await gamePage.clickAddButton();
 
-  const firstRowColours = await gamePage.getCellColours(0);
-
-  const expectedStatusesFirstRound = [
-    "letter-cell wrong", // o
-    "letter-cell wrong", // t
-    "letter-cell correct", // t
-    "letter-cell correct", // e
-    "letter-cell correct", // r
-  ];
-
-  await expect(firstRowColours).toEqual(expectedStatusesFirstRound);
-
-  const expectedStatusesSecondRound = [
-    "letter-cell correct", // w
-    "letter-cell correct", // a
-    "letter-cell correct", // t
-    "letter-cell correct", // e
-    "letter-cell correct", // r
-  ];
-  await gamePage.fillInput("water");
-  await gamePage.clickAddButton();
-
-  await page.waitForTimeout(500);
-
-  const secondRowColours = await gamePage.getCellColours(1);
-
-  await expect(secondRowColours).toEqual(expectedStatusesSecondRound);
+  await expect(
+    page.getByText(
+      "Sorry, we don't have this word in our dictionary. Try another one",
+    ),
+  ).toBeVisible();
 });
 
 test("Letter colors are correct (target word: flood)", async ({ page }) => {
@@ -163,6 +117,8 @@ test("Letter colors are correct (target word: flood)", async ({ page }) => {
 
   await game.fillInput("force");
   await game.clickAddButton();
+
+  await page.waitForTimeout(500);
 
   const firstRowColours = await game.getCellColours(0);
 

@@ -1,20 +1,14 @@
-import { containsOnlyLetters } from "./utils.js";
-
-const regexEnglishWord = /^[a-zA-Z]+$/;
-const getInputError = (str) => {
+import { fetchWords } from "./utils.js";
+import i18n from "i18next";
+const getInputError = async (str) => {
   if (str.trim().length !== 5) {
-    return "Invalid input. Please enter a 5-letter word.";
+    return i18n.t("errors.invalidInput.letterLengtth");
   }
 
-  if (!containsOnlyLetters(str.trim())) {
-    return "Invalid input. Please enter only letters.";
+  const dictionary = await fetchWords();
+  if (!dictionary.includes(str.trim().toLowerCase())) {
+    return i18n.t("errors.invalidInput.notInDictionary");
   }
-
-  if (!regexEnglishWord.test(str.trim())) {
-    return "Invalid input. Please enter an English word.";
-  }
-
-  // TODO: add that the word is in the dictionary
 
   return null;
 };

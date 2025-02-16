@@ -1,6 +1,7 @@
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
+import { v4 as uuidv4 } from 'uuid';
 const RulesModal = ({ show, handleClose }) => {
   const { t } = useTranslation();
   return (
@@ -9,11 +10,9 @@ const RulesModal = ({ show, handleClose }) => {
         <Modal.Title>{t("modals.rules.title")}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p>{t("modals.rules.rule1")}</p>
-        <p>{t("modals.rules.rule2")}</p>
-        <p>{t("modals.rules.rule3")}</p>
-        <p>{t("modals.rules.rule4")}</p>
-        <p>{t("modals.rules.rule5")}</p>
+        {Array.from({ length: 5 }, (_, i) => (
+          <p key={uuidv4()}>{t(`modals.rules.rule${i + 1}`)}</p>
+        ))}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
