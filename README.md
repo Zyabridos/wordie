@@ -17,8 +17,8 @@ To play the game locally, follow these steps:
 ### **Clone the repository**
 
 ```sh
-git clone https://github.com/zyabridos/your-repo.git
-cd your-repo
+git clone https://github.com/zyabridos/wordie.git
+cd wordie
 ```
 
 ### **Install dependencies**
