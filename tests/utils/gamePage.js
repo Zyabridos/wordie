@@ -17,7 +17,9 @@ export const setTargetWord = async (page, word) => {
 };
 
 export const fillInput = async (page, text) => {
-  const input = page.getByRole("textbox", { name: "forms.main.wordInputLabel" });
+  const input = page.getByRole("textbox", {
+    name: "forms.main.wordInputLabel",
+  });
   await input.fill(text);
 };
 
@@ -29,9 +31,11 @@ export const clickAddButton = async (page) => {
 export const getCellColours = async (page, rowIndex) => {
   const cellSelector = `#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`;
   await page.waitForSelector(cellSelector, { timeout: 3000 });
-  return await page.locator(cellSelector).evaluateAll((cells) =>
-    cells.map((cell) => cell.getAttribute("class").trim())
-  );
+  return await page
+    .locator(cellSelector)
+    .evaluateAll((cells) =>
+      cells.map((cell) => cell.getAttribute("class").trim()),
+    );
 };
 
 export const getVictoryModal = (page) => page.getByTestId("victory-modal");

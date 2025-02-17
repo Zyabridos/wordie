@@ -10,7 +10,7 @@ import {
   resetInputError,
 } from "../store/slices/gameSlice.js";
 import getInputError from "../errorHandler.js";
-import { compareCommonLetters } from "../utils.js";
+import { compareLetters } from "../utils.js";
 import useCellColours from "./useCellColours.js";
 import useModalState from "./useModalState.js";
 import { incrementRoundsCount } from "../store/slices/roundSlice.js";
@@ -27,36 +27,18 @@ const useHandleSubmit = () => {
     async (e) => {
       e.preventDefault();
 
-      const error = await getInputError(inputText.trim());
+      const trimmedInput = inputText.trim().toLowerCase();
+
+      const error = await getInputError(trimmedInput);
       if (error) {
         dispatch(setInputError(error));
         return;
       }
 
       dispatch(resetInputError());
-      dispatch(addWord({ body: inputText.trim().toLowerCase() }));
+      dispatch(addWord({ body: trimmedInput }));
 
-      const wordArray = inputText.toLowerCase().split("");
-      const newAnswer = Array(5).fill("wrong");
-
-      const letterCount = {};
-      targetWord.split("").forEach((char) => {
-        letterCount[char] = (letterCount[char] || 0) + 1;
-      });
-
-      wordArray.forEach((char, index) => {
-        if (char === targetWord[index]) {
-          newAnswer[index] = "correct";
-          letterCount[char]--;
-        }
-      });
-
-      wordArray.forEach((char, index) => {
-        if (newAnswer[index] === "wrong" && letterCount[char] > 0) {
-          newAnswer[index] = "misplaced";
-          letterCount[char]--;
-        }
-      });
+      const newAnswer = compareLetters(trimmedInput, targetWord.toLowerCase());
 
       const updatedColours = cellColours.map((row, rowIndex) =>
         rowIndex === roundsCount - 1 ? [...newAnswer] : [...row],
@@ -64,11 +46,15 @@ const useHandleSubmit = () => {
 
       updateCellColours(updatedColours);
       dispatch(addAnswer(newAnswer));
-      dispatch(
-        setCommonLetters(
-          compareCommonLetters(inputText.trim().toLowerCase(), targetWord),
-        ),
-      );
+
+      const commonLetters = {};
+      for (const char of trimmedInput) {
+        if (targetWord.includes(char)) {
+          commonLetters[char] = (commonLetters[char] || 0) + 1;
+        }
+      }
+
+      dispatch(setCommonLetters(commonLetters));
 
       if (newAnswer.every((letter) => letter === "correct")) {
         openVictory();

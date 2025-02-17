@@ -1,0 +1,21 @@
+name: Jest tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test:
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install deps
+        run: make install
+
+      - name: Run Jest tests
+        run: make jest

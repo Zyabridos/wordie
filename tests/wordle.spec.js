@@ -6,7 +6,7 @@ import {
   fillInput,
   clickAddButton,
   getCellColours,
-} from "./utils/gamePage.js"
+} from "./utils/gamePage.js";
 
 let game;
 
@@ -34,7 +34,7 @@ test("Letter colors are correct (target word: water)", async () => {
   await fillInput(game, "water");
   await clickAddButton(game);
   await expect(await getCellColours(game, 1)).toEqual(
-    Array(5).fill("letter-cell correct")
+    Array(5).fill("letter-cell correct"),
   );
 });
 
@@ -55,6 +55,6 @@ test("Letter colors are correct (target word: flood)", async () => {
   await fillInput(game, "flood");
   await clickAddButton(game);
   await expect(await getCellColours(game, 1)).toEqual(
-    Array(5).fill("letter-cell correct")
+    Array(5).fill("letter-cell correct"),
   );
 });
