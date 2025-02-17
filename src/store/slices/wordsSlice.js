@@ -1,18 +1,13 @@
 import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchWords, getRandomWord } from "../../utils.js";
-
-// Загрузка сохранённых слов из localStorage
 const loadWords = () => {
   const savedWords = localStorage.getItem("words");
   return savedWords ? JSON.parse(savedWords) : [];
 };
-
-// Загрузка сохранённого targetWord
 const loadTargetWord = () => {
   return localStorage.getItem("targetWord") || "";
 };
 
-// Получение слов с сервера
 export const fetchWordsAsync = createAsyncThunk(
   "words/fetchWords",
   async () => {

@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { addWord } from "../store/slices/wordsSlice.js";
 import {
   addAnswer,
-  incrementRoundsCount,
   setCommonLetters,
   setInputText,
   resetInputText,
@@ -14,11 +13,12 @@ import getInputError from "../errorHandler.js";
 import { compareCommonLetters } from "../utils.js";
 import useCellColours from "./useCellColours.js";
 import useModalState from "./useModalState.js";
+import { incrementRoundsCount } from "../store/slices/roundSlice.js";
 
 const useHandleSubmit = () => {
   const dispatch = useDispatch();
   const targetWord = useSelector((state) => state.game.targetWord);
-  const roundsCount = useSelector((state) => state.game.roundsCount);
+  const roundsCount = useSelector((state) => state.round.roundsCount);
   const inputText = useSelector((state) => state.game.inputText);
   const { cellColours, updateCellColours } = useCellColours();
   const { openVictory, openGameOver } = useModalState();

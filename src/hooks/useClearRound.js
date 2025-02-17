@@ -1,9 +1,9 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { clearWords } from "../store/slices/wordsSlice.js";
+import { resetRoundsCount } from "../store/slices/roundSlice.js";
 import {
   setTargetWord,
-  resetRoundsCount,
   resetAnswers,
   resetCommonLetters,
   resetInputError,

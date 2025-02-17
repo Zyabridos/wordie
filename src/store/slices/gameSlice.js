@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  roundsCount: 1,
   targetWord: "",
   answers: [],
   commonLetters: {},
@@ -14,12 +13,6 @@ const gameSlice = createSlice({
   name: "game",
   initialState,
   reducers: {
-    resetRoundsCount: (state) => {
-      state.roundsCount = 1;
-    },
-    incrementRoundsCount: (state) => {
-      state.roundsCount += 1;
-    },
     setTargetWord: (state, action) => {
       state.targetWord = action.payload;
     },
@@ -60,8 +53,6 @@ const gameSlice = createSlice({
 });
 
 export const {
-  resetRoundsCount,
-  incrementRoundsCount,
   setTargetWord,
   resetTargetWord,
   setAnswers,

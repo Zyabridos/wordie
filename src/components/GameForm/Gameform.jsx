@@ -9,9 +9,6 @@ import { setInputText } from "../../store/slices/gameSlice.js";
 import useClearRound from "../../hooks/useClearRound.js";
 import useHandleSubmit from "../../hooks/useHandleSubmit.js";
 import useFetchAndSetTargetWord from "../../hooks/useFetchAndSetTargetWord.js";
-
-// TODO for tomorrow:
-// 2. remove close button from victory modal and from game over modal (or solve this problem in another way)
 const GameForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
