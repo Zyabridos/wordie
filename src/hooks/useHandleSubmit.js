@@ -1,19 +1,16 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addWord } from "../store/slices/wordsSlice.js";
 import {
   addAnswer,
   setCommonLetters,
   setInputText,
   resetInputText,
-  setInputError,
-  resetInputError,
 } from "../store/slices/gameSlice.js";
-import getInputError from "../errorHandler.js";
+import { incrementRoundsCount } from "../store/slices/roundSlice.js";
 import { compareLetters, calculateCommonLetters } from "../utils/gameUtils.js";
 import useCellColours from "./useCellColours.js";
 import useModalState from "./useModalState.js";
-import { incrementRoundsCount } from "../store/slices/roundSlice.js";
+import { handleInputValidation } from "../utils/handleInputValidation.js";
 
 const useHandleSubmit = () => {
   const dispatch = useDispatch();
@@ -27,16 +24,8 @@ const useHandleSubmit = () => {
     async (e) => {
       e.preventDefault();
 
-      const trimmedInput = inputText.trim().toLowerCase();
-
-      const error = await getInputError(trimmedInput);
-      if (error) {
-        dispatch(setInputError(error));
-        return;
-      }
-
-      dispatch(resetInputError());
-      dispatch(addWord({ body: trimmedInput }));
+      const trimmedInput = await handleInputValidation(inputText, dispatch);
+      if (!trimmedInput) return;
 
       const newAnswer = compareLetters(targetWord.toLowerCase(), trimmedInput);
 
@@ -46,9 +35,7 @@ const useHandleSubmit = () => {
       updateCellColours(updatedColours);
 
       dispatch(addAnswer(newAnswer));
-      dispatch(
-        setCommonLetters(calculateCommonLetters(targetWord, trimmedInput)),
-      );
+      dispatch(setCommonLetters(calculateCommonLetters(targetWord, trimmedInput)));
 
       if (newAnswer.every((letter) => letter === "correct")) {
         openVictory();
