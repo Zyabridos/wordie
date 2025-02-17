@@ -75,9 +75,14 @@ After running the game, check your terminal for the **localhost URL** (e.g., `ht
 
 ## Additional Commands
 
-### 🧪 **Run tests**
+### **Run E2E tests**
 
 ```sh
-Run tests:
 make test
+```
+
+### **Run unitt tests**
+
+```sh
+make jest
 ```
