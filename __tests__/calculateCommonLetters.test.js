@@ -1,23 +1,18 @@
-import { describe, it, expect } from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 import { calculateCommonLetters } from "../src/utils/gameUtils.js";
 
+const testCases = [
+  ["water", "otter", { t: 2, e: 1, r: 1 }],
+  ["apple", "hound", {}],
+  ["food", "flood", { f: 1, o: 2, d: 1 }],
+];
+
 describe("calculateCommonLetters", () => {
-  it("correct amount of common letters (water vs otter)", () => {
-    const actual = calculateCommonLetters("water", "otter");
-    const expected = { t: 2, e: 1, r: 1 };
-    expect(actual).toEqual(expected);
-  });
-
-  it("no common letters (world vs apple)", () => {
-    const actual = calculateCommonLetters("apple", "hound");
-    const expected = {};
-    expect(actual).toEqual(expected);
-  });
-
-  it("count duplicate letters (food vs flood)", () => {
-    const actual = calculateCommonLetters("food", "flood");
-    const expected = { f: 1, o: 2, d: 1 };
-
-    expect(actual).toEqual(expected);
-  });
+  test.each(testCases)(
+    "calculates common letters for %s vs %s",
+    (target, answer, expected) => {
+      const actual = calculateCommonLetters(target, answer);
+      expect(actual).toEqual(expected);
+    },
+  );
 });

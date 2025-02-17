@@ -1,5 +1,4 @@
 import { describe, it, expect } from "@jest/globals";
-// import { compareLetters } from "../src/utils.js";
 import { compareLetters } from "../src/utils/gameUtils.js";
 
 describe("compareLetters should mark all letters correctly", () => {
