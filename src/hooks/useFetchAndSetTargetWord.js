@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getRandomWord, fetchWords } from "../utils.js";
+import { getRandomWord, fetchWords } from "../utils/wordUtils.js";
 import { setTargetWord, setTargetArray } from "../store/slices/gameSlice.js";
 
 const useFetchAndSetTargetWord = () => {

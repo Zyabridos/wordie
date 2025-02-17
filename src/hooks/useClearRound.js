@@ -10,7 +10,7 @@ import {
   resetInputText,
 } from "../store/slices/gameSlice.js";
 import useCellColours from "./useCellColours.js";
-import { getRandomWord } from "../utils.js";
+import { getRandomWord } from "../utils/wordUtils.js";
 
 const useClearRound = () => {
   const dispatch = useDispatch();

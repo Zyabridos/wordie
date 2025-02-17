@@ -39,11 +39,11 @@ test("Get a game over modal after exactly 5 turns", async () => {
     /Sorry, you lost! The correct word was:/,
   );
 
-  const tryAgainButton = gameOverModal.getByRole("button", {
-    name: "Try again",
+  const playAgain = gameOverModal.getByRole("button", {
+    name: "Play again",
   });
-  await expect(tryAgainButton).toBeVisible();
-  await tryAgainButton.click();
+  await expect(playAgain).toBeVisible();
+  await playAgain.click();
   await expect(gameOverModal).not.toBeVisible();
 
   await expect(getGameContainer(game)).toBeVisible();
@@ -61,11 +61,11 @@ test("Victory modal shows up", async () => {
 
   const victoryModal = getVictoryModal(game);
   await expect(victoryModal).toBeVisible();
-  const tryAgainButton = victoryModal.getByRole("button", {
-    name: "Try again",
+  const playAgain = victoryModal.getByRole("button", {
+    name: "Play again",
   });
-  await expect(tryAgainButton).toBeVisible();
-  await tryAgainButton.click();
+  await expect(playAgain).toBeVisible();
+  await playAgain.click();
   await expect(victoryModal).not.toBeVisible();
   await waitForGameContainer(game);
 });

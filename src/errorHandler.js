@@ -1,4 +1,4 @@
-import { fetchWords } from "./utils.js";
+import { fetchWords } from "./utils/wordUtils.js";
 import i18n from "i18next";
 const getInputError = async (str) => {
   if (str.trim().length !== 5) {

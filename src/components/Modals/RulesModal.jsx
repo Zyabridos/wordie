@@ -2,7 +2,7 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
-import ModalHeader from "./ModalHeader";
+import ModalHeader from "./Mixins/ModalHeader";
 import PropTypes from "prop-types";
 const RulesModal = ({ show, handleClose }) => {
   const { t } = useTranslation();

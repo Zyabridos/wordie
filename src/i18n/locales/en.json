@@ -18,17 +18,15 @@
     "languageSwitcher": "Change language"
   },
   "modals": {
+    "buttonClose": "Close",
+    "buttonRestart": "Play again",
     "gameOver": {
       "title": "Game over",
-      "message": "Sorry, you lost! The correct word was: {{targetWord}}",
-      "buttonRestart": "Try again",
-      "buttonClose": "Close"
+      "message": "Sorry, you lost! The correct word was: {{targetWord}}"
     },
     "victory": {
       "title": "Victory",
-      "message": "Congratulations! You won!",
-      "buttonClose": "Close",
-      "buttonRestart": "Play again"
+      "message": "Congratulations! You won!"
     },
     "rules": {
       "title": "How to play",
