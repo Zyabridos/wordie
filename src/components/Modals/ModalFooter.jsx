@@ -1,4 +1,5 @@
 import { Button, Modal } from "react-bootstrap";
+import PropTypes from "prop-types";
 
 const ModalFooter = ({
   handleClose,
@@ -16,6 +17,13 @@ const ModalFooter = ({
       </Button>
     </Modal.Footer>
   );
+};
+
+ModalFooter.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  handleRestart: PropTypes.func.isRequired,
+  closeText: PropTypes.string.isRequired,
+  restartText: PropTypes.string.isRequired,
 };
 
 export default ModalFooter;

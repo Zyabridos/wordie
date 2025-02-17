@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import PropTypes from 'prop-types';
 
 const Grid = ({ words, cellColours }) => {
   return (
@@ -23,6 +24,15 @@ const Grid = ({ words, cellColours }) => {
         ))}
     </div>
   );
+};
+
+Grid.propTypes = {
+  words: PropTypes.arrayOf(
+    PropTypes.shape({
+      body: PropTypes.string,
+    })
+  ).isRequired,
+  cellColours: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)).isRequired,
 };
 
 export default Grid;

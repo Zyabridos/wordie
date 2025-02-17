@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
 import ModalHeader from "./ModalHeader";
+import PropTypes from "prop-types";
 const RulesModal = ({ show, handleClose }) => {
   const { t } = useTranslation();
   return (
@@ -20,6 +21,11 @@ const RulesModal = ({ show, handleClose }) => {
       </Modal.Footer>
     </Modal>
   );
+};
+
+RulesModal.propTypes = {
+  show: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
 };
 
 export default RulesModal;
