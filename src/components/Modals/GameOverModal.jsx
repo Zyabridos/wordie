@@ -4,21 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../store/slices/modalSlice.js";
 import ModalFooter from "./ModalFooter";
 import ModalHeader from "./ModalHeader";
+import useClearRound from "../../hooks/useClearRound.js";
 
 const GameOverModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const clearRound = useClearRound();
 
   const targetWord = useSelector((state) => state.game.targetWord);
 
-  const handleRestart = () => {
+ const handleRestart = () => {
+    clearRound();
     dispatch(closeModal());
-    window.location.reload();
   };
 
   return (
-    <div name="game-over-modal">
-      <Modal show onHide={() => dispatch(closeModal())} centered>
+      <Modal show onHide={() => dispatch(closeModal())} centered data-testid="game-over-modal">
         <ModalHeader title={t("modals.gameOver.title")} />
         <Modal.Body>
           <p>{t("modals.gameOver.message", { targetWord })}</p>
@@ -30,7 +31,6 @@ const GameOverModal = () => {
           restartText={t("modals.gameOver.buttonRestart")}
         />
       </Modal>
-    </div>
   );
 };
 

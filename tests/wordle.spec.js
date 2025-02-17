@@ -61,7 +61,7 @@ test("Losing after exactly 5 turns", async ({ page }) => {
 
   await page.reload();
 
-  const gameOverModal = page.locator('div[role="dialog"]');
+  const gameOverModal = page.getByTestId('game-over-modal');
 
   for (let i = 0; i < 5; i += 1) {
     await gamePage.fillInput("otter");
@@ -183,3 +183,32 @@ test("Letter colors are correct (target word: flood)", async ({ page }) => {
 
   await expect(secondRowColours).toEqual(expectedStatusesSecondRound);
 });
+
+test("Victory modal shows up", async ({ page }) => {
+  const game = new GamePage(page);
+  await game.goto();
+
+  await page.evaluate(() => {
+    localStorage.setItem("targetWord", "water");
+  });
+
+  await page.reload();
+
+  game.fillInput("water");
+  await game.clickAddButton();
+
+  const modalVictory = page.getByTestId('victory-modal');
+
+  await page.waitForSelector('[data-testid="victory-modal"]', { timeout: 5000 });
+
+  await expect(modalVictory).toBeVisible();
+  const tryAgainButton = modalVictory.getByRole("button", {
+    name: "Try again",
+  });
+  await expect(tryAgainButton).toBeVisible();
+  await tryAgainButton.click();
+  await expect(modalVictory).not.toBeVisible();
+
+  const gameContainer = page.locator("#game-container");
+  await expect(gameContainer).toBeVisible();
+})

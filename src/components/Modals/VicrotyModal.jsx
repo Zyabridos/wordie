@@ -4,17 +4,19 @@ import { useDispatch } from "react-redux";
 import { closeModal } from "../../store/slices/modalSlice.js";
 import ModalFooter from "./ModalFooter";
 import ModalHeader from "./ModalHeader";
+import useClearRound from "../../hooks/useClearRound.js"
 
 const VictoryModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const clearRound = useClearRound();
   const handleRestart = () => {
+    clearRound();
     dispatch(closeModal());
-    window.location.reload();
   };
 
   return (
-    <Modal show onHide={() => dispatch(closeModal())} centered>
+    <Modal show onHide={() => dispatch(closeModal())} centered data-testid="victory-modal">
       <ModalHeader title={t("modals.victory.title")} />
       <Modal.Body>
         <p>{t("modals.victory.message")}</p>

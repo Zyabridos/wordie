@@ -11,7 +11,6 @@ import useHandleSubmit from "../../hooks/useHandleSubmit.js";
 import useFetchAndSetTargetWord from "../../hooks/useFetchAndSetTargetWord.js";
 
 // TODO for tomorrow:
-// 1. add target word to game over modal
 // 2. remove close button from victory modal and from game over modal (or solve this problem in another way)
 // 3. Write tests on modals
 // 4. write tests for contacts and rules
@@ -25,8 +24,8 @@ const GameForm = () => {
   const inputText = useSelector((state) => state.game.inputText);
   const inputError = useSelector((state) => state.game.inputError);
 
-  // const targetWord = useSelector((state) => state.game.targetWord);
-  // console.log(targetWord);
+  const targetWord = useSelector((state) => state.game.targetWord);
+  console.log(targetWord);
 
   const { cellColours } = useCellColours();
   const clearRound = useClearRound();
