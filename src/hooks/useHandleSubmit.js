@@ -73,7 +73,7 @@ const useHandleSubmit = () => {
       if (newAnswer.every((letter) => letter === "correct")) {
         openVictory();
       } else if (roundsCount === 5) {
-        openGameOver({ targetWord });
+        openGameOver();
       }
 
       dispatch(resetInputText());

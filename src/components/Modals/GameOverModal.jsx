@@ -1,13 +1,15 @@
 import { Modal } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { closeModal } from "../../store/slices/modalSlice.js";
 import ModalFooter from "./ModalFooter";
 import ModalHeader from "./ModalHeader";
 
-const GameOverModal = ({ targetWord }) => {
+const GameOverModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  const targetWord = useSelector((state) => state.game.targetWord);
 
   const handleRestart = () => {
     dispatch(closeModal());

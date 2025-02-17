@@ -20,7 +20,7 @@
   "modals": {
     "gameOver": {
       "title": "Game over",
-      "message": "Sorry, you lost! The correct word was: ",
+      "message": "Sorry, you lost! The correct word was: {{targetWord}}",
       "buttonRestart": "Try again",
       "buttonClose": "Close"
     },
