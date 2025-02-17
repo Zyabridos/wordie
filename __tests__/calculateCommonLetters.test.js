@@ -9,7 +9,7 @@ const testCases = [
 
 describe("calculateCommonLetters", () => {
   test.each(testCases)(
-    "calculates common letters for %s vs %s",
+    "calculates common letters",
     (target, answer, expected) => {
       const actual = calculateCommonLetters(target, answer);
       expect(actual).toEqual(expected);
