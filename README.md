@@ -76,7 +76,7 @@ After running the game, check your terminal for the **localhost URL** (e.g., `ht
 ## Additional Commands
 
 ### **Run E2E tests**
-
+While running app in development mode, type
 ```sh
 make test
 ```
