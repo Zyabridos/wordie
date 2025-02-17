@@ -14,7 +14,10 @@ const Grid = ({ words, cellColours }) => {
                 const letter = word[colIndex] || "";
                 const letterClass = cellColours[rowIndex]?.[colIndex] || "";
                 return (
-                  <div className={`letter-cell ${letterClass}`} key={`cell-${rowIndex}-${colIndex}`}>
+                  <div
+                    className={`letter-cell ${letterClass}`}
+                    key={`cell-${rowIndex}-${colIndex}`}
+                  >
                     {letter}
                   </div>
                 );

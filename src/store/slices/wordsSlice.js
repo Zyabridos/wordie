@@ -36,10 +36,6 @@ const wordsSlice = createSlice({
       state.words = [];
       localStorage.removeItem("words");
     },
-    setTargetWord: (state, action) => {
-      state.targetWord = action.payload;
-      localStorage.setItem("targetWord", action.payload);
-    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchWordsAsync.fulfilled, (state, action) => {

@@ -9,7 +9,6 @@ import useFetchAndSetTargetWord from "../../hooks/useFetchAndSetTargetWord.js";
 import InputWord from "./InputWord.jsx";
 import GameButtons from "./GameButtons.jsx";
 const GameForm = () => {
-
   useFetchAndSetTargetWord();
 
   const words = useSelector((state) => state.words);
