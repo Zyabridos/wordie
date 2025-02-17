@@ -28,7 +28,7 @@ const useHandleSubmit = () => {
       e.preventDefault();
 
       const trimmedInput = inputText.trim().toLowerCase();
-      
+
       const error = await getInputError(trimmedInput);
       if (error) {
         dispatch(setInputError(error));
@@ -41,12 +41,14 @@ const useHandleSubmit = () => {
       const newAnswer = compareLetters(targetWord.toLowerCase(), trimmedInput);
 
       const updatedColours = cellColours.map((row, rowIndex) =>
-        rowIndex === roundsCount - 1 ? [...newAnswer] : [...row]
+        rowIndex === roundsCount - 1 ? [...newAnswer] : [...row],
       );
       updateCellColours(updatedColours);
 
       dispatch(addAnswer(newAnswer));
-      dispatch(setCommonLetters(calculateCommonLetters(targetWord, trimmedInput)));
+      dispatch(
+        setCommonLetters(calculateCommonLetters(targetWord, trimmedInput)),
+      );
 
       if (newAnswer.every((letter) => letter === "correct")) {
         openVictory();
@@ -67,7 +69,7 @@ const useHandleSubmit = () => {
       updateCellColours,
       openVictory,
       openGameOver,
-    ]
+    ],
   );
 };
 

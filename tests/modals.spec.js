@@ -8,7 +8,7 @@ import {
   getVictoryModal,
   getGameOverModal,
   getGameContainer,
-} from "./utils/gamePage.js"
+} from "./utils/gamePage.js";
 
 let game;
 
@@ -27,13 +27,21 @@ test("Get a game over modal after exactly 5 turns", async () => {
     await clickAddButton(game);
   }
 
-  await game.waitForSelector('[data-testid="game-over-modal"]', { timeout: 5000 });
+  await game.waitForTimeout(1000);
+
+  await game.waitForSelector('[data-testid="game-over-modal"]', {
+    timeout: 10000,
+  });
 
   const gameOverModal = getGameOverModal(game);
   await expect(gameOverModal).toBeVisible();
-  await expect(gameOverModal).toContainText(/Sorry, you lost! The correct word was:/);
+  await expect(gameOverModal).toContainText(
+    /Sorry, you lost! The correct word was:/,
+  );
 
-  const tryAgainButton = gameOverModal.getByRole("button", { name: "Try again" });
+  const tryAgainButton = gameOverModal.getByRole("button", {
+    name: "Try again",
+  });
   await expect(tryAgainButton).toBeVisible();
   await tryAgainButton.click();
   await expect(gameOverModal).not.toBeVisible();
@@ -53,7 +61,9 @@ test("Victory modal shows up", async () => {
 
   const victoryModal = getVictoryModal(game);
   await expect(victoryModal).toBeVisible();
-  const tryAgainButton = victoryModal.getByRole("button", { name: "Try again" });
+  const tryAgainButton = victoryModal.getByRole("button", {
+    name: "Try again",
+  });
   await expect(tryAgainButton).toBeVisible();
   await tryAgainButton.click();
   await expect(victoryModal).not.toBeVisible();

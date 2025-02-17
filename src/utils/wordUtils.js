@@ -4,7 +4,6 @@ export const getRandomWord = (wordsList) => {
   return wordsList[randomInt];
 };
 
-
 export const fetchWords = async () => {
   try {
     const response = await fetch("/words.txt");
