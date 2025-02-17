@@ -13,24 +13,29 @@ const GameOverModal = () => {
 
   const targetWord = useSelector((state) => state.game.targetWord);
 
- const handleRestart = () => {
+  const handleRestart = () => {
     clearRound();
     dispatch(closeModal());
   };
 
   return (
-      <Modal show onHide={() => dispatch(closeModal())} centered data-testid="game-over-modal">
-        <ModalHeader title={t("modals.gameOver.title")} />
-        <Modal.Body>
-          <p>{t("modals.gameOver.message", { targetWord })}</p>
-        </Modal.Body>
-        <ModalFooter
-          handleClose={() => dispatch(closeModal())}
-          handleRestart={handleRestart}
-          closeText={t("modals.gameOver.buttonClose")}
-          restartText={t("modals.gameOver.buttonRestart")}
-        />
-      </Modal>
+    <Modal
+      show
+      onHide={() => dispatch(closeModal())}
+      centered
+      data-testid="game-over-modal"
+    >
+      <ModalHeader title={t("modals.gameOver.title")} />
+      <Modal.Body>
+        <p>{t("modals.gameOver.message", { targetWord })}</p>
+      </Modal.Body>
+      <ModalFooter
+        handleClose={() => dispatch(closeModal())}
+        handleRestart={handleRestart}
+        closeText={t("modals.gameOver.buttonClose")}
+        restartText={t("modals.gameOver.buttonRestart")}
+      />
+    </Modal>
   );
 };
 

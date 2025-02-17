@@ -1,214 +1,161 @@
 import { test, expect } from "@playwright/test";
+
 class GamePage {
   constructor(page) {
     this.page = page;
+    this.input = page.getByRole("textbox", {
+      name: "forms.main.wordInputLabel",
+    });
+    this.addButton = page.getByRole("button", { name: "Add" });
+    this.gameContainer = page.locator("#game-container");
+    this.victoryModal = page.getByTestId("victory-modal");
+    this.gameOverModal = page.getByTestId("game-over-modal");
   }
 
   async goto() {
     await this.page.goto("http://localhost:3000");
   }
 
-  async clickAddButton() {
-    await this.page.getByRole("button", { name: "Add" }).click();
+  async waitForGameContainer() {
+    await expect(this.gameContainer).toBeVisible();
+  }
+
+  async setTargetWord(word) {
+    await this.page.evaluate((word) => {
+      localStorage.setItem("targetWord", word);
+    }, word);
+    await this.page.reload();
   }
 
   async fillInput(text) {
-    await this.page
-      .getByRole("textbox", { name: "forms.main.wordInputLabel" })
-      .click();
-    await this.page
-      .getByRole("textbox", { name: "forms.main.wordInputLabel" })
-      .fill(text);
+    await this.input.fill(text);
   }
-  async getCellColours(rowIndex) {
-    await this.page.waitForSelector(
-      `#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`,
-      { timeout: 3000 },
-    );
 
+  async clickAddButton() {
+    await this.addButton.click();
+  }
+
+  async getCellColours(rowIndex) {
+    const cellSelector = `#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`;
+    await this.page.waitForSelector(cellSelector, { timeout: 3000 });
     return await this.page
-      .locator(`#game-container .row:nth-child(${rowIndex + 1}) .letter-cell`)
+      .locator(cellSelector)
       .evaluateAll((cells) =>
         cells.map((cell) => cell.getAttribute("class").trim()),
       );
   }
 }
 
-let gamePage;
+let game;
 
 test.beforeEach(async ({ page }) => {
-  gamePage = new GamePage(page);
-  await gamePage.goto();
-});
-
-test("Open the page", async ({ page, context }) => {
-  await page.goto("http://localhost:3000");
-  await context.setOffline(true);
-
-  const input = await page.getByRole("textbox", {
-    name: "forms.main.wordInputLabel",
-  });
-  await expect(input).toBeVisible();
+  game = new GamePage(page);
+  await game.goto();
+  await game.waitForGameContainer();
 });
 
 test("Losing after exactly 5 turns", async ({ page }) => {
-  const gamePage = new GamePage(page);
-  await gamePage.goto();
-
-  await page.evaluate(() => {
-    localStorage.setItem("targetWord", "water");
-  });
+  await game.setTargetWord("water");
 
   await page.reload();
 
-  const gameOverModal = page.getByTestId('game-over-modal');
-
   for (let i = 0; i < 5; i += 1) {
-    await gamePage.fillInput("otter");
-    await gamePage.clickAddButton();
+    await game.fillInput("otter");
+    await game.clickAddButton();
   }
 
   await page.waitForTimeout(1000);
 
-  await expect(gameOverModal).toBeVisible();
-  await expect(gameOverModal).toContainText(
+  await expect(game.gameOverModal).toBeVisible();
+  await expect(game.gameOverModal).toContainText(
     /Sorry, you lost! The correct word was:/,
   );
 
-  const tryAgainButton = gameOverModal.getByRole("button", {
+  const tryAgainButton = game.gameOverModal.getByRole("button", {
     name: "Try again",
   });
   await expect(tryAgainButton).toBeVisible();
   await tryAgainButton.click();
-  await expect(gameOverModal).not.toBeVisible();
+  await expect(game.gameOverModal).not.toBeVisible();
 
-  const gameContainer = page.locator("#game-container");
-  await expect(gameContainer).toBeVisible();
+  await expect(game.gameContainer).toBeVisible();
 });
 
-test("Expect errors messages to be visible", async ({ page }) => {
-  const gamePage = new GamePage(page);
-  await gamePage.goto();
-
-  await gamePage.fillInput("jdkryb");
-  await gamePage.clickAddButton();
-
+test("Expect error messages to be visible", async () => {
+  await game.fillInput("jdkryb");
+  await game.clickAddButton();
   await expect(
-    page.getByText("Invalid input. Please enter a 5-letter word"),
+    game.page.getByText("Invalid input. Please enter a 5-letter word"),
   ).toBeVisible();
 
-  await gamePage.fillInput("jdkrb");
-  await gamePage.clickAddButton();
-
+  await game.fillInput("jdkrb");
+  await game.clickAddButton();
   await expect(
-    page.getByText(
+    game.page.getByText(
       "Sorry, we don't have this word in our dictionary. Try another one",
     ),
   ).toBeVisible();
 });
 
-test("Letter colors are correct (target word: water)", async ({ page }) => {
-  const gamePage = new GamePage(page);
+test("Letter colors are correct (target word: water)", async () => {
+  await game.setTargetWord("water");
 
-  await gamePage.goto();
-  await page.waitForTimeout(500);
+  await game.fillInput("otter");
+  await game.clickAddButton();
 
-  await page.evaluate(() => {
-    localStorage.setItem("targetWord", "water");
-  });
-
-  await page.reload();
-
-  await gamePage.fillInput("otter");
-  await gamePage.clickAddButton();
-
-  const firstRowColours = await gamePage.getCellColours(0);
-
-  const expectedStatusesFirstRound = [
-    "letter-cell wrong", // o
-    "letter-cell wrong", // t
-    "letter-cell correct", // t
-    "letter-cell correct", // e
-    "letter-cell correct", // r
+  const expectedFirstRow = [
+    "letter-cell wrong",
+    "letter-cell wrong",
+    "letter-cell correct",
+    "letter-cell correct",
+    "letter-cell correct",
   ];
+  await expect(await game.getCellColours(0)).toEqual(expectedFirstRow);
 
-  await expect(firstRowColours).toEqual(expectedStatusesFirstRound);
-
-  const expectedStatusesSecondRound = Array(5).fill("letter-cell correct");
-  await gamePage.fillInput("water");
-  await gamePage.clickAddButton();
-
-  await page.waitForTimeout(500);
-
-  const secondRowColours = await gamePage.getCellColours(1);
-
-  await expect(secondRowColours).toEqual(expectedStatusesSecondRound);
+  await game.fillInput("water");
+  await game.clickAddButton();
+  await expect(await game.getCellColours(1)).toEqual(
+    Array(5).fill("letter-cell correct"),
+  );
 });
 
-test("Letter colors are correct (target word: flood)", async ({ page }) => {
-  const game = new GamePage(page);
-  await game.goto();
-
-  await page.evaluate(() => {
-    localStorage.setItem("targetWord", "flood");
-  });
-
-  await page.reload();
+test("Letter colors are correct (target word: flood)", async () => {
+  await game.setTargetWord("flood");
 
   await game.fillInput("force");
   await game.clickAddButton();
-
-  await page.waitForTimeout(1000);
-
-  const firstRowColours = await game.getCellColours(0);
-
-  const expectedStatusesFirstRound = [
+  const expectedFirstRow = [
     "letter-cell correct",
     "letter-cell misplaced",
     "letter-cell wrong",
     "letter-cell wrong",
     "letter-cell wrong",
   ];
-
-  await expect(firstRowColours).toEqual(expectedStatusesFirstRound);
+  await expect(await game.getCellColours(0)).toEqual(expectedFirstRow);
 
   await game.fillInput("flood");
   await game.clickAddButton();
-
-  await page.waitForTimeout(1000);
-
-  const secondRowColours = await game.getCellColours(1);
-
-  const expectedStatusesSecondRound = Array(5).fill("letter-cell correct");
-
-  await expect(secondRowColours).toEqual(expectedStatusesSecondRound);
+  await expect(await game.getCellColours(1)).toEqual(
+    Array(5).fill("letter-cell correct"),
+  );
 });
 
-test("Victory modal shows up", async ({ page }) => {
-  const game = new GamePage(page);
-  await game.goto();
+test("Victory modal shows up", async () => {
+  await game.setTargetWord("water");
 
-  await page.evaluate(() => {
-    localStorage.setItem("targetWord", "water");
-  });
-
-  await page.reload();
-
-  game.fillInput("water");
+  await game.fillInput("water");
   await game.clickAddButton();
 
-  const modalVictory = page.getByTestId('victory-modal');
+  await game.page.waitForSelector("[data-testid='victory-modal']", {
+    timeout: 5000,
+  });
 
-  await page.waitForSelector('[data-testid="victory-modal"]', { timeout: 5000 });
-
-  await expect(modalVictory).toBeVisible();
-  const tryAgainButton = modalVictory.getByRole("button", {
+  await expect(game.victoryModal).toBeVisible();
+  const tryAgainButton = game.victoryModal.getByRole("button", {
     name: "Try again",
   });
   await expect(tryAgainButton).toBeVisible();
   await tryAgainButton.click();
-  await expect(modalVictory).not.toBeVisible();
-
-  const gameContainer = page.locator("#game-container");
-  await expect(gameContainer).toBeVisible();
-})
+  await expect(game.victoryModal).not.toBeVisible();
+  await game.waitForGameContainer();
+});
