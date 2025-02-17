@@ -24,7 +24,7 @@ cd wordie
 ### **Install dependencies**
 
 ```sh
-npm ci
+make install
 ```
 
 ### **Build the project**
