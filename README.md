@@ -46,7 +46,7 @@ make dev
 
 After running the game, check your terminal for the **localhost URL** (e.g., `http://localhost:3000`) and open it in your browser.
 
-### \*\*Rules
+### **Rules
 
 1. You have 5 guesses.
 2. All words consist of exactly 5 letters.
@@ -73,22 +73,11 @@ After running the game, check your terminal for the **localhost URL** (e.g., `ht
 - `T`, `E`, `R` → 🟩 (Correct letters in the correct positions)
 - The first `T` in `OTTER` will not be yellow because `WATER` contains only **one** `T`.
 
-## 🛠 Additional Commands
-
-### 🔄 **Run in development mode**
-
-```sh
-npm run dev
-```
+## Additional Commands
 
 ### 🧪 **Run tests**
 
 ```sh
-npx playwright test
-```
-
-### 🧹 **Format the code**
-
-```sh
-npx prettier --write .
+Run tests:
+make test
 ```
