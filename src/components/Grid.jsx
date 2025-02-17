@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import PropTypes from "prop-types";
 
 const Grid = ({ words, cellColours }) => {
@@ -7,7 +6,7 @@ const Grid = ({ words, cellColours }) => {
       {Array(5)
         .fill(0)
         .map((_, rowIndex) => (
-          <div className="row" key={uuidv4()}>
+          <div className="row" key={`row-${rowIndex}`}>
             {Array(5)
               .fill(0)
               .map((_, colIndex) => {
@@ -15,7 +14,7 @@ const Grid = ({ words, cellColours }) => {
                 const letter = word[colIndex] || "";
                 const letterClass = cellColours[rowIndex]?.[colIndex] || "";
                 return (
-                  <div className={`letter-cell ${letterClass}`} key={uuidv4()}>
+                  <div className={`letter-cell ${letterClass}`} key={`cell-${rowIndex}-${colIndex}`}>
                     {letter}
                   </div>
                 );

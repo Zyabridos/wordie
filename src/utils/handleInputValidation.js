@@ -4,7 +4,7 @@ import { addWord } from "../store/slices/wordsSlice.js";
 
 export const handleInputValidation = async (inputText, dispatch) => {
   const trimmedInput = inputText.trim().toLowerCase();
-  
+
   const error = await getInputError(trimmedInput);
   if (error) {
     dispatch(setInputError(error));

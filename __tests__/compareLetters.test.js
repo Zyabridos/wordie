@@ -8,11 +8,8 @@ const testCases = [
 ];
 
 describe("compareLetters should mark all letters correctly", () => {
-  test.each(testCases)(
-    "compare letters",
-    (target, answer, expected) => {
-      const actual = compareLetters(target, answer);
-      expect(actual).toEqual(expected);
-    },
-  );
+  test.each(testCases)("compare letters", (target, answer, expected) => {
+    const actual = compareLetters(target, answer);
+    expect(actual).toEqual(expected);
+  });
 });

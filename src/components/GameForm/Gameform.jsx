@@ -1,17 +1,14 @@
 import { useSelector } from "react-redux";
 import "./Gameform.css";
-import { useTranslation } from "react-i18next";
-import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Grid from "../Grid.jsx";
 import useCellColours from "../../hooks/useCellColours.js";
 import ModalManager from "../Modals/ModalManager.jsx";
-import useClearRound from "../../hooks/useClearRound.js";
 import useHandleSubmit from "../../hooks/useHandleSubmit.js";
 import useFetchAndSetTargetWord from "../../hooks/useFetchAndSetTargetWord.js";
 import InputWord from "./InputWord.jsx";
 import GameButtons from "./GameButtons.jsx";
 const GameForm = () => {
-  const { t } = useTranslation();
 
   useFetchAndSetTargetWord();
 
@@ -21,7 +18,6 @@ const GameForm = () => {
   console.log(targetWord);
 
   const { cellColours } = useCellColours();
-  const clearRound = useClearRound();
   const handleSubmit = useHandleSubmit();
 
   return (
@@ -29,7 +25,7 @@ const GameForm = () => {
       <Grid words={words.words} cellColours={cellColours} />
 
       <Form noValidate onSubmit={handleSubmit} className="p-3 border rounded">
-         <InputWord />
+        <InputWord />
         <GameButtons />
       </Form>
       <ModalManager />

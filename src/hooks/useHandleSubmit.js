@@ -35,7 +35,9 @@ const useHandleSubmit = () => {
       updateCellColours(updatedColours);
 
       dispatch(addAnswer(newAnswer));
-      dispatch(setCommonLetters(calculateCommonLetters(targetWord, trimmedInput)));
+      dispatch(
+        setCommonLetters(calculateCommonLetters(targetWord, trimmedInput)),
+      );
 
       if (newAnswer.every((letter) => letter === "correct")) {
         openVictory();

@@ -22,7 +22,9 @@ const WordInput = () => {
           onChange={(e) => dispatch(setInputText(e.target.value))}
           isInvalid={!!inputError}
         />
-        <Form.Control.Feedback type="invalid">{inputError}</Form.Control.Feedback>
+        <Form.Control.Feedback type="invalid">
+          {inputError}
+        </Form.Control.Feedback>
       </InputGroup>
     </Form.Group>
   );
