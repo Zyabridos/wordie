@@ -1,12 +1,15 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { openModal, closeModal } from "../store/slices/modalSlice.js";
 
 const useModalState = () => {
   const dispatch = useDispatch();
+  const { isOpen, type, props } = useSelector((state) => state.modal);
 
   return {
-    openVictory: () => dispatch(openModal({ type: "victory" })),
-    openGameOver: (props) => dispatch(openModal({ type: "gameOver", props })),
+    isOpen,
+    type,
+    props,
+    openModal: (type, props = {}) => dispatch(openModal({ type, props })),
     closeModal: () => dispatch(closeModal()),
   };
 };
