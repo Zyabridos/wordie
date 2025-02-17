@@ -7,9 +7,6 @@ publish:
 lint:
 	npx eslint .
 
-play:
-	node src/index.js
-
 test:
 	npx playwright test
 
@@ -20,8 +17,11 @@ dev:
 	npm run dev
 
 build:
-		rm -rf dist
-		npm run build
+	rm -rf dist
+	npm run build
+
+start:
+	npx start-server -s ./dist
 
 p:
 	npx prettier --write .

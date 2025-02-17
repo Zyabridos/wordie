@@ -78,6 +78,7 @@ const useHandleSubmit = () => {
 
       dispatch(resetInputText());
       dispatch(incrementRoundsCount());
+      dispatch(setInputText(""));
     },
     [
       dispatch,
