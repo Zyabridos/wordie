@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Eslint check
 
 on:
   push:
@@ -13,6 +13,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Install deps
+        run: make install
 
       - name: Run eslint
         run: make lint
