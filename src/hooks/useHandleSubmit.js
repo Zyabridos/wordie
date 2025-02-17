@@ -10,7 +10,7 @@ import {
   resetInputError,
 } from "../store/slices/gameSlice.js";
 import getInputError from "../errorHandler.js";
-import { compareLetters } from "../utils.js";
+import { compareLetters, calculateCommonLetters } from "../utils/gameUtils.js";
 import useCellColours from "./useCellColours.js";
 import useModalState from "./useModalState.js";
 import { incrementRoundsCount } from "../store/slices/roundSlice.js";
@@ -28,7 +28,7 @@ const useHandleSubmit = () => {
       e.preventDefault();
 
       const trimmedInput = inputText.trim().toLowerCase();
-
+      
       const error = await getInputError(trimmedInput);
       if (error) {
         dispatch(setInputError(error));
@@ -38,23 +38,15 @@ const useHandleSubmit = () => {
       dispatch(resetInputError());
       dispatch(addWord({ body: trimmedInput }));
 
-      const newAnswer = compareLetters(trimmedInput, targetWord.toLowerCase());
+      const newAnswer = compareLetters(targetWord.toLowerCase(), trimmedInput);
 
       const updatedColours = cellColours.map((row, rowIndex) =>
-        rowIndex === roundsCount - 1 ? [...newAnswer] : [...row],
+        rowIndex === roundsCount - 1 ? [...newAnswer] : [...row]
       );
-
       updateCellColours(updatedColours);
+
       dispatch(addAnswer(newAnswer));
-
-      const commonLetters = {};
-      for (const char of trimmedInput) {
-        if (targetWord.includes(char)) {
-          commonLetters[char] = (commonLetters[char] || 0) + 1;
-        }
-      }
-
-      dispatch(setCommonLetters(commonLetters));
+      dispatch(setCommonLetters(calculateCommonLetters(targetWord, trimmedInput)));
 
       if (newAnswer.every((letter) => letter === "correct")) {
         openVictory();
@@ -75,7 +67,7 @@ const useHandleSubmit = () => {
       updateCellColours,
       openVictory,
       openGameOver,
-    ],
+    ]
   );
 };
 

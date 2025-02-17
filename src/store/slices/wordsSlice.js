@@ -1,5 +1,5 @@
 import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchWords, getRandomWord } from "../../utils.js";
+import { fetchWords, getRandomWord } from "../../utils/wordUtils.js";
 const loadWords = () => {
   const savedWords = localStorage.getItem("words");
   return savedWords ? JSON.parse(savedWords) : [];
