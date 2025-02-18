@@ -46,7 +46,7 @@ make dev
 
 After running the game, check your terminal for the **localhost URL** (e.g., `http://localhost:3000`) and open it in your browser.
 
-### **Rules
+### \*\*Rules
 
 1. You have 5 guesses.
 2. All words consist of exactly 5 letters.
@@ -76,7 +76,9 @@ After running the game, check your terminal for the **localhost URL** (e.g., `ht
 ## Additional Commands
 
 ### **Run E2E tests**
+
 While running app in development mode, type
+
 ```sh
 make test
 ```

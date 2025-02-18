@@ -13,9 +13,6 @@ const GameForm = () => {
 
   const words = useSelector((state) => state.words);
 
-  const targetWord = useSelector((state) => state.game.targetWord);
-  console.log(targetWord);
-
   const { cellColours } = useCellColours();
   const handleSubmit = useHandleSubmit();
 
