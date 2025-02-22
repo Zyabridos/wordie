@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { DEFAULT_AMOUNT_OF_ROUNDS } from "../src/defaultConstants.js";
 import {
   goto,
   waitForGameContainer,

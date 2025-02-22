@@ -39,6 +39,7 @@ test(`Get a game over modal after exactly ${DEFAULT_AMOUNT_OF_ROUNDS} turns`, as
   await expect(gameOverModal).toContainText(
     /Sorry, you lost! The correct word was:/,
   );
+  await expect(gameOverModal).toContainText("water");
 
   const playAgain = gameOverModal.getByRole("button", {
     name: "Play again",
