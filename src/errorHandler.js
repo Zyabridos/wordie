@@ -1,10 +1,11 @@
 import { fetchWords } from "./utils/wordUtils.js";
 import i18n from "i18next";
+import { DEFAULT_WORD_LENGTH } from "./defaultConstants.js";
 
-const getInputError = async (str) => {
+const getInputError = async (str, wordLength = DEFAULT_WORD_LENGTH) => {
   const trimmed = str.trim().toLowerCase();
 
-  if (trimmed.length !== 5) {
+  if (trimmed.length !== wordLength) {
     return i18n.t("errors.invalidInput.letterLengtth");
   }
 

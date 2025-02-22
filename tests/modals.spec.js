@@ -1,3 +1,4 @@
+import { DEFAULT_AMOUNT_OF_ROUNDS } from "../src/defaultConstants.js";
 import { test, expect } from "@playwright/test";
 import {
   goto,
@@ -18,11 +19,11 @@ test.beforeEach(async ({ page }) => {
   await waitForGameContainer(game);
 });
 
-test("Get a game over modal after exactly 5 turns", async () => {
+test(`Get a game over modal after exactly ${DEFAULT_AMOUNT_OF_ROUNDS} turns`, async () => {
   await setTargetWord(game, "water");
   await game.reload();
 
-  for (let i = 0; i < 5; i += 1) {
+  for (let i = 0; i < DEFAULT_AMOUNT_OF_ROUNDS; i += 1) {
     await fillInput(game, "otter");
     await clickAddButton(game);
   }

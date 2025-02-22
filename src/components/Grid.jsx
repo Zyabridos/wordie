@@ -1,14 +1,20 @@
 import PropTypes from "prop-types";
+import {
+  DEFAULT_AMOUNT_OF_ROUNDS,
+  DEFAULT_WORD_LENGTH,
+} from "../defaultConstants.js";
 
-const ROWS = 5;
-const COLUMNS = 5;
-
-const Grid = ({ words, cellColours }) => {
+const Grid = ({
+  words,
+  cellColours,
+  rounds = DEFAULT_AMOUNT_OF_ROUNDS,
+  wordLength = DEFAULT_WORD_LENGTH,
+}) => {
   return (
     <div className="grid">
-      {Array.from({ length: ROWS }).map((_, rowIndex) => (
+      {Array.from({ length: rounds }).map((_, rowIndex) => (
         <div className="row" key={`row-${rowIndex}`}>
-          {Array.from({ length: COLUMNS }).map((_, colIndex) => {
+          {Array.from({ length: wordLength }).map((_, colIndex) => {
             const word = words[rowIndex]?.body || "";
             const letter = word[colIndex] || "";
             const letterClass = cellColours[rowIndex]?.[colIndex] || "";
@@ -35,6 +41,8 @@ Grid.propTypes = {
   ).isRequired,
   cellColours: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string))
     .isRequired,
+  rounds: PropTypes.number,
+  wordLength: PropTypes.number,
 };
 
 export default Grid;

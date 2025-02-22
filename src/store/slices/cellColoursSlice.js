@@ -1,12 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  DEFAULT_WORD_LENGTH,
+  DEFAULT_AMOUNT_OF_ROUNDS,
+} from "../../defaultConstants.js";
 
 const loadCellColours = () => {
   const savedCellColours = localStorage.getItem("cellColours");
   return savedCellColours
     ? JSON.parse(savedCellColours)
-    : Array(5)
-        .fill(null)
-        .map(() => Array(5).fill(""));
+    : Array.from({ length: DEFAULT_AMOUNT_OF_ROUNDS }, () =>
+        Array(DEFAULT_WORD_LENGTH).fill(""),
+      );
 };
 
 const cellColoursSlice = createSlice({
@@ -18,9 +22,9 @@ const cellColoursSlice = createSlice({
       localStorage.setItem("cellColours", JSON.stringify(action.payload));
     },
     resetCellColours: (state) => {
-      state.cellColours = Array(5)
-        .fill(null)
-        .map(() => Array(5).fill(""));
+      state.cellColours = Array.from({ length: DEFAULT_AMOUNT_OF_ROUNDS }, () =>
+        Array(DEFAULT_WORD_LENGTH).fill(""),
+      );
       localStorage.removeItem("cellColours");
     },
   },
