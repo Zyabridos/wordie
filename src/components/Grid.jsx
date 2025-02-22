@@ -1,14 +1,15 @@
 import PropTypes from "prop-types";
 
+const ROWS = 5;
+const COLUMNS = 5;
+
 const Grid = ({ words, cellColours }) => {
   return (
     <div className="grid">
-      {Array(5)
-        .fill(0)
+      {Array.from({ length: ROWS })
         .map((_, rowIndex) => (
           <div className="row" key={`row-${rowIndex}`}>
-            {Array(5)
-              .fill(0)
+            {Array.from({ length: COLUMNS })
               .map((_, colIndex) => {
                 const word = words[rowIndex]?.body || "";
                 const letter = word[colIndex] || "";
