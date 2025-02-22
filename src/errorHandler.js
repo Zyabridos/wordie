@@ -1,12 +1,17 @@
 import { fetchWords } from "./utils/wordUtils.js";
 import i18n from "i18next";
+
 const getInputError = async (str) => {
-  if (str.trim().length !== 5) {
+  const trimmed = str.trim().toLowerCase();
+
+  if (trimmed.length !== 5) {
     return i18n.t("errors.invalidInput.letterLengtth");
   }
 
   const dictionary = await fetchWords();
-  if (!dictionary.includes(str.trim().toLowerCase())) {
+  const words = dictionary.map((item) => item.word);
+
+  if (!words.includes(trimmed)) {
     return i18n.t("errors.invalidInput.notInDictionary");
   }
 

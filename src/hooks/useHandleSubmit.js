@@ -14,7 +14,7 @@ import { handleInputValidation } from "../utils/handleInputValidation.js";
 
 const useHandleSubmit = () => {
   const dispatch = useDispatch();
-  const targetWord = useSelector((state) => state.game.targetWord);
+  const targetWordObj = useSelector((state) => state.game.targetWord);
   const roundsCount = useSelector((state) => state.round.roundsCount);
   const inputText = useSelector((state) => state.game.inputText);
   const { cellColours, updateCellColours } = useCellColours();
@@ -27,6 +27,7 @@ const useHandleSubmit = () => {
       const trimmedInput = await handleInputValidation(inputText, dispatch);
       if (!trimmedInput) return;
 
+      const targetWord = targetWordObj ? targetWordObj.word : "";
       const newAnswer = compareLetters(targetWord.toLowerCase(), trimmedInput);
 
       const updatedColours = cellColours.map((row, rowIndex) =>
@@ -51,7 +52,7 @@ const useHandleSubmit = () => {
     },
     [
       dispatch,
-      targetWord,
+      targetWordObj,
       roundsCount,
       inputText,
       cellColours,

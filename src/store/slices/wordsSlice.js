@@ -1,11 +1,15 @@
 import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
 import { fetchWords, getRandomWord } from "../../utils/wordUtils.js";
+
 const loadWords = () => {
   const savedWords = localStorage.getItem("words");
   return savedWords ? JSON.parse(savedWords) : [];
 };
+
 const loadTargetWord = () => {
-  return localStorage.getItem("targetWord") || "";
+  const word = localStorage.getItem("targetWord");
+  const id = localStorage.getItem("targetWordId");
+  return word && id ? { id, word } : null;
 };
 
 export const fetchWordsAsync = createAsyncThunk(
@@ -36,12 +40,18 @@ const wordsSlice = createSlice({
       state.words = [];
       localStorage.removeItem("words");
     },
+    setTargetWord: (state, action) => {
+      state.targetWord = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchWordsAsync.fulfilled, (state, action) => {
       state.targetArray = action.payload;
       if (!state.targetWord) {
-        state.targetWord = getRandomWord(action.payload);
+        const randomObj = getRandomWord(action.payload);
+        if (randomObj) {
+          state.targetWord = randomObj;
+        }
       }
     });
   },

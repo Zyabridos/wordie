@@ -11,13 +11,18 @@ const useFetchAndSetTargetWord = () => {
       dispatch(setTargetArray(words));
 
       let storedWord = localStorage.getItem("targetWord");
+      let storedWordId = localStorage.getItem("targetWordId");
 
-      if (!storedWord) {
-        storedWord = getRandomWord(words);
-        localStorage.setItem("targetWord", storedWord);
+      if (!storedWord || !storedWordId) {
+        const randomWordObj = getRandomWord(words);
+        if (randomWordObj) {
+          storedWord = randomWordObj.word;
+          storedWordId = randomWordObj.id;
+          localStorage.setItem("targetWord", storedWord);
+          localStorage.setItem("targetWordId", storedWordId);
+        }
       }
-
-      dispatch(setTargetWord(storedWord));
+      dispatch(setTargetWord({ id: storedWordId, word: storedWord }));
     });
   }, [dispatch]);
 };
