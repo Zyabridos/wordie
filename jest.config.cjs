@@ -1,5 +1,5 @@
 module.exports = {
-  testEnvironment: "jsdom",
+  testEnvironment: "node",
   transform: {
     "^.+\\.(js|jsx)$": "babel-jest",
   },

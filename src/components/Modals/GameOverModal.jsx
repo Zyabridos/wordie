@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import ModalBase from "./Mixins/ModalBase.jsx";
+import PropTypes from "prop-types";
 
 const GameOverModal = ({ targetWord }) => {
   const { t } = useTranslation();
@@ -10,6 +11,10 @@ const GameOverModal = ({ targetWord }) => {
       testId="game-over-modal"
     />
   );
+};
+
+GameOverModal.propTypes = {
+  targetWord: PropTypes.string,
 };
 
 export default GameOverModal;
