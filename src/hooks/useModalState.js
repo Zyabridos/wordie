@@ -4,11 +4,27 @@ import { openModal, closeModal } from "../store/slices/modalSlice.js";
 const useModalState = () => {
   const dispatch = useDispatch();
 
-  return {
-    openVictory: () => dispatch(openModal({ type: "victory" })),
-    openGameOver: (props) => dispatch(openModal({ type: "gameOver", props })),
-    closeModal: () => dispatch(closeModal()),
+  const openVictory = () => {
+    dispatch(
+      openModal({
+        type: "victory",
+        props: {},
+      }),
+    );
   };
+
+  const openGameOver = (targetWord) => {
+    dispatch(
+      openModal({
+        type: "gameOver",
+        props: { targetWord },
+      }),
+    );
+  };
+
+  const close = () => dispatch(closeModal());
+
+  return { openVictory, openGameOver, close };
 };
 
 export default useModalState;

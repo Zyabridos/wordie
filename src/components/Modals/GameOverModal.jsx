@@ -1,12 +1,12 @@
 import { useTranslation } from "react-i18next";
 import ModalBase from "./Mixins/ModalBase.jsx";
 
-const GameOverModal = () => {
+const GameOverModal = ({ targetWord }) => {
   const { t } = useTranslation();
   return (
     <ModalBase
       title={t("modals.gameOver.title")}
-      message={t("modals.gameOver.message")}
+      message={t("modals.gameOver.message", { targetWord })}
       testId="game-over-modal"
     />
   );
