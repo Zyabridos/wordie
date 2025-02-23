@@ -7,10 +7,11 @@ import {
   resetInputText,
 } from "../store/slices/gameSlice.js";
 import { incrementRoundsCount } from "../store/slices/roundSlice.js";
-import { compareLetters, calculateCommonLetters } from "../utils/gameUtils.js";
+import { compareLetters, calculateCommonLetters, updateColoursForRound } from "../utils/gameUtils.js";
 import useCellColours from "./useCellColours.js";
 import useModalState from "./useModalState.js";
 import { handleInputValidation } from "../utils/handleInputValidation.js";
+
 
 const useHandleSubmit = () => {
   const dispatch = useDispatch();
@@ -30,10 +31,7 @@ const useHandleSubmit = () => {
       const targetWord = targetWordObj ? targetWordObj.word : "";
       const newAnswer = compareLetters(targetWord.toLowerCase(), trimmedInput);
 
-      const updatedColours = cellColours.map((row, rowIndex) =>
-        rowIndex === roundsCount - 1 ? [...newAnswer] : [...row],
-      );
-      updateCellColours(updatedColours);
+      updateColoursForRound(cellColours, newAnswer, roundsCount, updateCellColours);
 
       dispatch(addAnswer(newAnswer));
       dispatch(

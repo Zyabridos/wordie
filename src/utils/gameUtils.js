@@ -45,3 +45,15 @@ export const compareLetters = (target, answer) => {
   const result = markCorrectLetters(target, answer, letterCount);
   return markMisplacedLetters(answer, result, letterCount);
 };
+
+export const updateColoursForRound = (
+  cellColours,
+  newAnswer,
+  roundsCount,
+  updateCellColours,
+) => {
+  const updatedColours = cellColours.map((row, rowIndex) =>
+    rowIndex === roundsCount - 1 ? [...newAnswer] : [...row],
+  );
+  updateCellColours(updatedColours);
+};
