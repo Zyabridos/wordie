@@ -1,3 +1,11 @@
+import {
+  addAnswer,
+  setCommonLetters,
+  resetInputText,
+  setInputText,
+} from "../store/slices/gameSlice.js";
+import { incrementRoundsCount } from "../store/slices/roundSlice.js";
+
 export const countLetters = (word) => {
   return [...word].reduce((acc, char) => {
     acc[char] = (acc[char] || 0) + 1;
@@ -56,4 +64,32 @@ export const updateColoursForRound = (
     rowIndex === roundsCount - 1 ? [...newAnswer] : [...row],
   );
   updateCellColours(updatedColours);
+};
+
+export const checkGameStatus = (
+  newAnswer,
+  roundsCount,
+  targetWord,
+  openVictory,
+  openGameOver,
+  maxRounds,
+) => {
+  if (newAnswer.every((letter) => letter === "correct")) {
+    openVictory();
+  } else if (roundsCount === maxRounds) {
+    openGameOver(targetWord);
+  }
+};
+
+export const updateGameState = (
+  dispatch,
+  newAnswer,
+  targetWord,
+  trimmedInput,
+) => {
+  dispatch(addAnswer(newAnswer));
+  dispatch(setCommonLetters(calculateCommonLetters(targetWord, trimmedInput)));
+  dispatch(resetInputText());
+  dispatch(incrementRoundsCount());
+  dispatch(setInputText(""));
 };
